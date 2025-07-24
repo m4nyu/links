@@ -49,9 +49,9 @@ export default function Meeting() {
             config={{
               layout: "month_view",
               theme: resolvedTheme === "dark" ? "dark" : "light",
-              hideEventTypeDetails: false,
+              hideEventTypeDetails: "false",
               branding: {
-                hideBranding: true
+                hideBranding: "true"
               }
             }}
           />

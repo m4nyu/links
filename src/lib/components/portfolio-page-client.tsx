@@ -36,7 +36,7 @@ function PortfolioPageClientInner({ dictionary, lang }: { dictionary: any; lang:
       const { default: JSZip } = await import('jszip')
       const zip = new JSZip()
       
-      const img = new Image()
+      const img = new window.Image()
       img.crossOrigin = 'anonymous'
       
       const processImage = (grayscale: boolean = false) => {

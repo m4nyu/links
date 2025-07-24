@@ -11,7 +11,8 @@
       "Bash(npm run lint:*)",
       "Bash(mkdir:*)",
       "Bash(bun update:*)",
-      "Bash(bun add:*)"
+      "Bash(bun add:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }
