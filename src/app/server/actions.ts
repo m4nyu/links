@@ -1,8 +1,8 @@
 "use server"
 
-import { parse } from "node-html-parser"
+import { type HTMLElement, parse } from "node-html-parser"
 
-const getMetaTag = (doc: any, property: string) => {
+const getMetaTag = (doc: HTMLElement, property: string) => {
   const el = doc.querySelector(`meta[property="${property}"]`)
   return el ? el.getAttribute("content") : null
 }

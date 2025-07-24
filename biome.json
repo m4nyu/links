@@ -1,8 +1,6 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-  "organizeImports": {
-    "enabled": true
-  },
+  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+  "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
@@ -26,12 +24,7 @@
         "noArrayIndexKey": "warn"
       }
     },
-    "ignore": [
-      "**/node_modules/**",
-      "**/.next/**",
-      "**/dist/**",
-      "**/build/**"
-    ]
+    "includes": ["**", "!**/node_modules/**", "!**/.next/**", "!**/dist/**", "!**/build/**"]
   },
   "formatter": {
     "enabled": true,
@@ -40,12 +33,7 @@
     "indentWidth": 2,
     "lineWidth": 120,
     "lineEnding": "lf",
-    "ignore": [
-      "**/node_modules/**",
-      "**/.next/**",
-      "**/dist/**",
-      "**/build/**"
-    ]
+    "includes": ["**", "!**/node_modules/**", "!**/.next/**", "!**/dist/**", "!**/build/**"]
   },
   "javascript": {
     "formatter": {
@@ -66,30 +54,38 @@
     }
   },
   "files": {
-    "include": [
+    "includes": [
       "**/*.js",
       "**/*.jsx",
       "**/*.ts",
       "**/*.tsx",
       "**/*.json",
-      "**/*.jsonc"
-    ],
-    "ignore": [
-      "**/node_modules/**",
-      "**/.next/**",
-      "**/dist/**",
-      "**/build/**",
-      "**/.git/**",
-      "**/coverage/**"
+      "**/*.jsonc",
+      "!**/node_modules/**",
+      "!**/.next/**",
+      "!**/dist/**",
+      "!**/build/**",
+      "!**/.git/**",
+      "!**/coverage/**"
     ]
   },
   "overrides": [
     {
-      "include": ["**/*.tsx", "**/*.jsx"],
+      "includes": ["**/*.tsx", "**/*.jsx"],
       "linter": {
         "rules": {
           "a11y": {
             "recommended": true
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/animation/boxes.tsx"],
+      "linter": {
+        "rules": {
+          "suspicious": {
+            "noArrayIndexKey": "off"
           }
         }
       }

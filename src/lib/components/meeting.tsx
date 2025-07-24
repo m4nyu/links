@@ -1,9 +1,9 @@
 "use client"
 
 import Cal from "@calcom/embed-react"
+import { CircleNotchIcon } from "@phosphor-icons/react"
 import { useTheme } from "next-themes"
 import { useEffect, useState } from "react"
-import { CircleNotchIcon } from "@phosphor-icons/react"
 
 export default function Meeting() {
   const { resolvedTheme } = useTheme()
@@ -16,7 +16,7 @@ export default function Meeting() {
     setIsLoading(true)
     const timer = setTimeout(() => setIsLoading(false), 1500)
     return () => clearTimeout(timer)
-  }, [resolvedTheme])
+  }, [])
 
   return (
     <div className="w-full h-full relative overflow-hidden">
@@ -26,43 +26,43 @@ export default function Meeting() {
           <CircleNotchIcon className="size-8 animate-spin text-muted-foreground" />
         </div>
       )}
-      
+
       {/* Cal.com embed with bottom masking */}
       <div className="w-full h-full relative overflow-hidden">
-        <div 
+        <div
           className="absolute top-0 left-0 right-0"
-          style={{ 
-            height: "calc(100% + 100px)", 
-            bottom: "-100px"
+          style={{
+            height: "calc(100% + 100px)",
+            bottom: "-100px",
           }}
         >
           <Cal
-            key={`cal-${key}-${resolvedTheme || 'system'}`}
+            key={`cal-${key}-${resolvedTheme || "system"}`}
             calLink="m4nuel/30min"
-            style={{ 
-              width: "100%", 
+            style={{
+              width: "100%",
               height: "100%",
               border: "none",
               borderRadius: "0",
-              background: "transparent"
+              background: "transparent",
             }}
             config={{
               layout: "month_view",
               theme: resolvedTheme === "dark" ? "dark" : "light",
-              hideEventTypeDetails: false,
+              hideEventTypeDetails: "false",
               branding: {
-                hideBranding: true
-              }
+                hideBranding: "true",
+              },
             }}
           />
         </div>
-        
+
         {/* Bottom overlay to hide Cal.com branding */}
-        <div 
+        <div
           className="absolute bottom-0 left-0 right-0 bg-background pointer-events-none"
           style={{
             height: "100px",
-            zIndex: 100
+            zIndex: 100,
           }}
         />
       </div>

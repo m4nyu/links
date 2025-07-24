@@ -1,15 +1,15 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect } from "react"
+import { ArrowSquareOutIcon, CheckIcon, CircleNotchIcon, ShareNetworkIcon } from "@phosphor-icons/react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
+import { AnimatePresence, motion } from "framer-motion"
 import Image from "next/image"
-import { motion, AnimatePresence } from "framer-motion"
+import type React from "react"
+import { useEffect, useState } from "react"
+import { Button } from "@/lib/components/ui/button"
 import { Card, CardDescription, CardTitle } from "@/lib/components/ui/card"
 import { ContextMenu, ContextMenuContent, ContextMenuItem, ContextMenuTrigger } from "@/lib/components/ui/context-menu"
-import { Dialog, DialogTrigger, DialogPortal, DialogOverlay } from "@/lib/components/ui/dialog"
-import * as DialogPrimitive from "@radix-ui/react-dialog"
-import { Button } from "@/lib/components/ui/button"
-import { ShareNetworkIcon, ArrowSquareOutIcon, CheckIcon, CircleNotchIcon } from "@phosphor-icons/react"
+import { Dialog, DialogOverlay, DialogPortal, DialogTrigger } from "@/lib/components/ui/dialog"
 import { cn } from "@/lib/utils"
 
 type Startup = {
@@ -40,12 +40,12 @@ export function InfoCard({ startup }: { startup: Startup }) {
       try {
         await navigator.share(shareData)
         shared = true
-      } catch (err) {}
+      } catch (_err) {}
     } else {
       try {
         await navigator.clipboard.writeText(startup.liveUrl)
         shared = true
-      } catch (err) {}
+      } catch (_err) {}
     }
 
     if (shared) {
@@ -92,7 +92,7 @@ export function InfoCard({ startup }: { startup: Startup }) {
       <ContextMenuTrigger>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <div role="button" tabIndex={0} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
               <a href={startup.liveUrl} target="_blank" rel="noopener noreferrer" className="block">
                 <Card className="group flex h-[450px] w-full flex-col overflow-hidden border transition-all hover:shadow-md">
                   <div className="flex flex-col h-full">
@@ -128,7 +128,11 @@ export function InfoCard({ startup }: { startup: Startup }) {
                           exit={{ opacity: 0, scale: 0.5 }}
                           transition={{ duration: 0.2 }}
                         >
-                          {isShared ? <CheckIcon className="size-4 text-green-600" /> : <ShareNetworkIcon className="size-4" />}
+                          {isShared ? (
+                            <CheckIcon className="size-4 text-green-600" />
+                          ) : (
+                            <ShareNetworkIcon className="size-4" />
+                          )}
                         </motion.div>
                       </AnimatePresence>
                     </Button>
