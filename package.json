@@ -47,7 +47,7 @@
     "autoprefixer": "^10.4.21",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "cmdk": "1.0.4",
+    "cmdk": "1.1.1",
     "embla-carousel-react": "8.5.1",
     "framer-motion": "latest",
     "geist": "^1.4.2",
