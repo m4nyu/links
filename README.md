@@ -118,16 +118,3 @@ src/
 ├── lib/               # Utilities and configurations
 └── styles/            # Global styles
 ```
-
-<style>
-.subnavigation a {
-  color: #ffffff !important;
-  font-weight: 500 !important;
-  font-size: 14px !important;
-}
-
-.subnavigation a:hover {
-  border-bottom-color: #ffffff !important;
-  transition: all 0.2s ease !important;
-}
-</style>
