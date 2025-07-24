@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "جون دو",
+    "tagline": "مؤسس ومهندس",
+    "myWork": "عملي",
+    "myWorkTooltip": "شاهد مشاريعي وشركاتي الناشئة.",
+    "scheduleMeeting": "تحديد موعد اجتماع",
+    "scheduleMeetingTooltip": "احجز فترة زمنية في تقويمي.",
+    "visitBlog": "زيارة مدونتي",
+    "visitBlogTooltip": "https://blog.johndoe.com",
+    "githubTooltip": "GitHub",
+    "linkedinTooltip": "LinkedIn",
+    "twitterTooltip": "X (تويتر سابقًا)",
+    "shareTooltip": "مشاركة",
+    "shareCopiedTooltip": "تم نسخ الرابط!",
+    "shareTitle": "ملف أعمال جون دو",
+    "shareText": "اطلع على ملف أعمال جون دو - مؤسس ومهندس شغوف."
+  },
+  "startups": {
+    "backToHome": "العودة إلى الصفحة الرئيسية",
+    "pageTitle": "شركاتي الناشئة",
+    "pageDescription": "مشاريع جون دو"
+  },
+  "meeting": {
+    "title": "حدد موعد اجتماع معي"
+  }
+}

@@ -1,0 +1,43 @@
+[install]
+# Install configuration
+cache = false
+frozenLockfile = false
+dryRun = false
+production = false
+optional = true
+dev = true
+peer = true
+exact = false
+
+[install.scopes]
+# Configure scoped registries if needed
+
+[install.registry]
+# Registry configuration
+url = "https://registry.npmjs.org/"
+username = ""
+password = ""
+token = ""
+
+[run]
+# Run configuration
+shell = "system"
+silent = false
+
+[test]
+# Test configuration  
+coverage = true
+preload = []
+
+[build]
+# Build configuration
+compile = false
+minify = false
+sourcemap = false
+target = "browser"
+
+[dev]
+# Development server configuration
+port = 3000
+host = "localhost"
+hot = true

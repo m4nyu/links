@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "Manuel",
+    "tagline": "Fondateur & Ingénieur",
+    "myWork": "MON TRAVAIL",
+    "myWorkTooltip": "Découvrez mon portfolio de startups et projets techniques",
+    "scheduleMeeting": "PLANIFIER UNE RÉUNION",
+    "scheduleMeetingTooltip": "Réservez un appel de 30 minutes pour discuter d'opportunités",
+    "visitBlog": "VISITER MON BLOG",
+    "visitBlogTooltip": "Lisez mes dernières réflexions sur la technologie et l'entrepreneuriat",
+    "githubTooltip": "Consultez mon code open source et mes contributions",
+    "linkedinTooltip": "Connectez-vous avec moi professionnellement sur LinkedIn",
+    "twitterTooltip": "Suivez-moi sur X pour des insights tech et actualités",
+    "shareTooltip": "Partagez ce portfolio avec d'autres",
+    "shareCopiedTooltip": "Lien du portfolio copié dans le presse-papiers !",
+    "shareTitle": "Portfolio de Manuel",
+    "shareText": "Découvrez le portfolio de Manuel - un fondateur et ingénieur passionné."
+  },
+  "startups": {
+    "backToHome": "Retour à l'accueil",
+    "pageTitle": "Mes Startups",
+    "pageDescription": "Projets par Manuel"
+  },
+  "meeting": {
+    "title": "Planifiez une réunion avec moi"
+  }
+}

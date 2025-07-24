@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "Manuel",
+    "tagline": "Fundador e Engenheiro",
+    "myWork": "MEU TRABALHO",
+    "myWorkTooltip": "Veja meus projetos e startups.",
+    "scheduleMeeting": "AGENDAR UMA REUNIÃO",
+    "scheduleMeetingTooltip": "Reserve um horário na minha agenda.",
+    "visitBlog": "VISITE MEU BLOG",
+    "visitBlogTooltip": "https://blog.johndoe.com",
+    "githubTooltip": "GitHub",
+    "linkedinTooltip": "LinkedIn",
+    "twitterTooltip": "X (antigo Twitter)",
+    "shareTooltip": "Compartilhar",
+    "shareCopiedTooltip": "Link copiado!",
+    "shareTitle": "Portfólio de Manuel",
+    "shareText": "Confira o portfólio de Manuel - um Fundador e Engenheiro apaixonado."
+  },
+  "startups": {
+    "backToHome": "Voltar para a página inicial",
+    "pageTitle": "Minhas Startups",
+    "pageDescription": "Projetos de Manuel"
+  },
+  "meeting": {
+    "title": "Agende uma reunião comigo"
+  }
+}

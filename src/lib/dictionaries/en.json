@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "Manuel",
+    "tagline": "Founder & Engineer",
+    "myWork": "MY WORK",
+    "myWorkTooltip": "View my portfolio of startups and technical projects",
+    "scheduleMeeting": "SCHEDULE A MEETING",
+    "scheduleMeetingTooltip": "Book a 30-minute call to discuss opportunities",
+    "visitBlog": "VISIT MY BLOG",
+    "visitBlogTooltip": "Read my latest thoughts on technology and entrepreneurship",
+    "githubTooltip": "View my open source code and contributions",
+    "linkedinTooltip": "Connect with me professionally on LinkedIn",
+    "twitterTooltip": "Follow me on X for tech insights and updates",
+    "shareTooltip": "Share this portfolio with others",
+    "shareCopiedTooltip": "Portfolio link copied to clipboard!",
+    "shareTitle": "Manuel's Portfolio",
+    "shareText": "Check out Manuel's portfolio - a passionate Founder & Engineer."
+  },
+  "startups": {
+    "backToHome": "Back to homepage",
+    "pageTitle": "My Startups",
+    "pageDescription": "Projects by Manuel"
+  },
+  "meeting": {
+    "title": "Schedule a meeting with me"
+  }
+}

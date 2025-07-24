@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "Джон Доу",
+    "tagline": "Основатель и инженер",
+    "myWork": "МОИ РАБОТЫ",
+    "myWorkTooltip": "Посмотрите мои проекты и стартапы.",
+    "scheduleMeeting": "НАЗНАЧИТЬ ВСТРЕЧУ",
+    "scheduleMeetingTooltip": "Забронируйте временной интервал в моем календаре.",
+    "visitBlog": "ПОСЕТИТЬ МОЙ БЛОГ",
+    "visitBlogTooltip": "https://blog.johndoe.com",
+    "githubTooltip": "GitHub",
+    "linkedinTooltip": "LinkedIn",
+    "twitterTooltip": "X (ранее Twitter)",
+    "shareTooltip": "Поделиться",
+    "shareCopiedTooltip": "Ссылка скопирована!",
+    "shareTitle": "Портфолио Джона Доу",
+    "shareText": "Ознакомьтесь с портфолио Джона Доу - увлеченного основателя и инженера."
+  },
+  "startups": {
+    "backToHome": "Вернуться на главную",
+    "pageTitle": "Мои стартапы",
+    "pageDescription": "Проекты Джона Доу"
+  },
+  "meeting": {
+    "title": "Назначьте встречу со мной"
+  }
+}

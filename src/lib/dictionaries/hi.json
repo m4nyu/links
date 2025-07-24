@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "जॉन डो",
+    "tagline": "संस्थापक और इंजीनियर",
+    "myWork": "मेरा काम",
+    "myWorkTooltip": "मेरे प्रोजेक्ट और स्टार्टअप देखें।",
+    "scheduleMeeting": "एक मीटिंग शेड्यूल करें",
+    "scheduleMeetingTooltip": "मेरे कैलेंडर पर एक टाइम स्लॉट बुक करें।",
+    "visitBlog": "मेरे ब्लॉग पर जाएँ",
+    "visitBlogTooltip": "https://blog.johndoe.com",
+    "githubTooltip": "GitHub",
+    "linkedinTooltip": "LinkedIn",
+    "twitterTooltip": "X (पूर्व में ट्विटर)",
+    "shareTooltip": "शेयर करें",
+    "shareCopiedTooltip": "लिंक कॉपी किया गया!",
+    "shareTitle": "जॉन डो का पोर्टफोलियो",
+    "shareText": "जॉन डो का पोर्टफोलियो देखें - एक उत्साही संस्थापक और इंजीनियर।"
+  },
+  "startups": {
+    "backToHome": "होमपेज पर वापस जाएं",
+    "pageTitle": "मेरे स्टार्टअप",
+    "pageDescription": "जॉन डो द्वारा परियोजनाएं"
+  },
+  "meeting": {
+    "title": "मेरे साथ एक मीटिंग शेड्यूल करें"
+  }
+}

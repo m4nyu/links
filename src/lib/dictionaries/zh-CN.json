@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "约翰·多伊",
+    "tagline": "创始人兼工程师",
+    "myWork": "我的工作",
+    "myWorkTooltip": "查看我的项目和初创公司。",
+    "scheduleMeeting": "安排会议",
+    "scheduleMeetingTooltip": "在我的日历上预订一个时间段。",
+    "visitBlog": "访问我的博客",
+    "visitBlogTooltip": "https://blog.johndoe.com",
+    "githubTooltip": "GitHub",
+    "linkedinTooltip": "领英",
+    "twitterTooltip": "X (前身为 Twitter)",
+    "shareTooltip": "分享",
+    "shareCopiedTooltip": "链接已复制！",
+    "shareTitle": "约翰·多伊的作品集",
+    "shareText": "快来看看约翰·多伊的作品集 - 一位充满激情的创始人兼工程师。"
+  },
+  "startups": {
+    "backToHome": "返回首页",
+    "pageTitle": "我的初创公司",
+    "pageDescription": "约翰·多伊的项目"
+  },
+  "meeting": {
+    "title": "与我安排会议"
+  }
+}

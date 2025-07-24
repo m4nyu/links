@@ -1,0 +1,27 @@
+{
+  "portfolio": {
+    "name": "ジョン・ドウ",
+    "tagline": "創設者兼エンジニア",
+    "myWork": "私の仕事",
+    "myWorkTooltip": "私のプロジェクトとスタートアップをご覧ください。",
+    "scheduleMeeting": "会議のスケジュール",
+    "scheduleMeetingTooltip": "私のカレンダーで時間枠を予約してください。",
+    "visitBlog": "ブログにアクセス",
+    "visitBlogTooltip": "https://blog.johndoe.com",
+    "githubTooltip": "GitHub",
+    "linkedinTooltip": "LinkedIn",
+    "twitterTooltip": "X (旧Twitter)",
+    "shareTooltip": "共有",
+    "shareCopiedTooltip": "リンクをコピーしました！",
+    "shareTitle": "ジョン・ドウのポートフォリオ",
+    "shareText": "情熱的な創設者兼エンジニアであるジョン・ドウのポートフォリオをご覧ください。"
+  },
+  "startups": {
+    "backToHome": "ホームページに戻る",
+    "pageTitle": "私のスタートアップ",
+    "pageDescription": "ジョン・ドウによるプロジェクト"
+  },
+  "meeting": {
+    "title": "私との会議をスケジュールする"
+  }
+}
