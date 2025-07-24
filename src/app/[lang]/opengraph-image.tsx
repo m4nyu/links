@@ -4,7 +4,6 @@ export const alt = "Manuel - Portfolio"
 export const contentType = "image/png"
 
 export default async function Image() {
-
   const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
   const avatarUrl = `${baseUrl}/placeholder.svg?height=256&width=256`
 
@@ -14,9 +13,7 @@ export default async function Image() {
   const gridColor = "rgba(255,255,255,0.07)"
 
   return new ImageResponse(
-    <div
-      tw={`relative flex h-full w-full flex-col items-center justify-center ${background} ${textColor}`}
-    >
+    <div tw={`relative flex h-full w-full flex-col items-center justify-center ${background} ${textColor}`}>
       <div
         tw="absolute top-0 left-0 right-0 bottom-0 opacity-50"
         style={{
@@ -38,6 +35,6 @@ export default async function Image() {
       width: 1200,
       height: 630,
       fonts: [],
-    },
+    }
   )
 }

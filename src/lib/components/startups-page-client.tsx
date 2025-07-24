@@ -1,9 +1,9 @@
 "use client"
 
-import Link from "next/link"
-import { Button } from "@/lib/components/ui/button"
 import { CaretLeftIcon } from "@phosphor-icons/react"
+import Link from "next/link"
 import { InfoCard } from "@/lib/components/info"
+import { Button } from "@/lib/components/ui/button"
 import type { Locale } from "@/lib/hooks/use-i18n-config"
 
 type Startup = {
@@ -15,7 +15,13 @@ type Startup = {
 
 interface StartupsPageClientProps {
   lang: Locale
-  dictionary: any
+  dictionary: {
+    startups: {
+      backToHome: string
+      pageTitle: string
+      pageDescription: string
+    }
+  }
   startups: Startup[]
 }
 
