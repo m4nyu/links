@@ -4,7 +4,8 @@ import { mdxComponents } from "@/lib/components/content/components"
 import { getMDXContent } from "@/lib/components/content/mdx"
 import type { Locale } from "@/lib/hooks/use-i18n-config"
 
-export default async function ImprintPage({ params: _params }: { params: { lang: Locale } }) {
+export default async function ImprintPage({ params }: { params: Promise<{ lang: Locale }> }) {
+  const _params = await params
   const content = await getMDXContent("imprint")
 
   if (!content) {
@@ -18,7 +19,8 @@ export default async function ImprintPage({ params: _params }: { params: { lang:
   )
 }
 
-export async function generateMetadata({ params: _params }: { params: { lang: Locale } }) {
+export async function generateMetadata({ params }: { params: Promise<{ lang: Locale }> }) {
+  const _params = await params
   const content = await getMDXContent("imprint")
 
   return {

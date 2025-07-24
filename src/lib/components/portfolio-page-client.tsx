@@ -60,7 +60,7 @@ function PortfolioPageClientInner({
       const { default: JSZip } = await import("jszip")
       const zip = new JSZip()
 
-      const img = new Image()
+      const img = new window.Image()
       img.crossOrigin = "anonymous"
 
       const processImage = (grayscale: boolean = false) => {
@@ -151,8 +151,8 @@ function PortfolioPageClientInner({
 
   const handleShare = async () => {
     const shareData = {
-      title: dictionary.shareTitle,
-      text: dictionary.shareText,
+      title: dictionary.portfolio.shareTitle,
+      text: dictionary.portfolio.shareText,
       url: window.location.href,
     }
 
@@ -183,7 +183,7 @@ function PortfolioPageClientInner({
             <Avatar className="size-40 rounded-full">
               <Image
                 src="/image.jpg"
-                alt={dictionary.name}
+                alt={dictionary.portfolio.name}
                 width={160}
                 height={160}
                 draggable="false"
@@ -214,15 +214,15 @@ function PortfolioPageClientInner({
         </ContextMenu>
 
         <div className="space-y-1">
-          <h1 className="text-4xl font-bold">{dictionary.name}</h1>
-          <p className="text-lg text-muted-foreground">{dictionary.tagline}</p>
+          <h1 className="text-4xl font-bold">{dictionary.portfolio.name}</h1>
+          <p className="text-lg text-muted-foreground">{dictionary.portfolio.tagline}</p>
         </div>
 
         <div className="flex w-full max-w-[280px] flex-col space-y-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button disabled className="w-full uppercase font-semibold tracking-wider opacity-50 cursor-not-allowed">
-                {dictionary.myWork} - Coming Soon
+                {dictionary.portfolio.myWork} - Coming Soon
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
@@ -237,17 +237,17 @@ function PortfolioPageClientInner({
                   className="w-full justify-between uppercase font-semibold tracking-wider"
                   onClick={() => setIsMeetingOpen(true)}
                 >
-                  {dictionary.scheduleMeeting}
+                  {dictionary.portfolio.scheduleMeeting}
                   <CalendarCheckIcon className="size-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                <p>{dictionary.scheduleMeetingTooltip}</p>
+                <p>{dictionary.portfolio.scheduleMeetingTooltip}</p>
               </TooltipContent>
             </Tooltip>
             <DrawerContent className="h-[90vh] max-h-[800px]">
               <DrawerHeader>
-                <DrawerTitle>{dictionary.scheduleMeeting}</DrawerTitle>
+                <DrawerTitle>{dictionary.portfolio.scheduleMeeting}</DrawerTitle>
               </DrawerHeader>
               <div className="flex-1 overflow-hidden">{isMeetingOpen && <Meeting />}</div>
             </DrawerContent>
@@ -264,7 +264,7 @@ function PortfolioPageClientInner({
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{dictionary.githubTooltip}</p>
+              <p>{dictionary.portfolio.githubTooltip}</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
@@ -276,7 +276,7 @@ function PortfolioPageClientInner({
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{dictionary.linkedinTooltip}</p>
+              <p>{dictionary.portfolio.linkedinTooltip}</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
@@ -288,7 +288,7 @@ function PortfolioPageClientInner({
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{dictionary.twitterTooltip}</p>
+              <p>{dictionary.portfolio.twitterTooltip}</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
@@ -314,7 +314,7 @@ function PortfolioPageClientInner({
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{isShared ? dictionary.shareCopiedTooltip : dictionary.shareTooltip}</p>
+              <p>{isShared ? dictionary.portfolio.shareCopiedTooltip : dictionary.portfolio.shareTooltip}</p>
             </TooltipContent>
           </Tooltip>
         </div>
