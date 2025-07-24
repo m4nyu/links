@@ -5,7 +5,7 @@ import BoxesWrapper from "@/lib/components/ui/animation/boxes-wrapper"
 
 const title = "portfolio"
 const description =
-    "Passionate Founder & Engineer, building the future one line of code at a time. Explore my startups and get in touch."
+  "Passionate Founder & Engineer, building the future one line of code at a time. Explore my startups and get in touch."
 const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
 
 export const metadata: Metadata = {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icon", type: "image/png" }
+      { url: "/icon", type: "image/png" },
     ],
     apple: "/apple-icon",
   },
@@ -47,5 +47,5 @@ export default function LangLayout({ children }: { children: React.ReactNode }) 
         </div>
       </div>
     </ThemeProvider>
-  );
+  )
 }

@@ -4,16 +4,13 @@ export const alt = "Manuels Startups"
 export const contentType = "image/png"
 
 export default async function Image() {
-
   const background = "bg-zinc-50"
   const textColor = "text-zinc-900"
   const subtitleColor = "text-zinc-500"
   const gridColor = "rgba(0,0,0,0.05)"
 
   return new ImageResponse(
-    <div
-      tw={`relative flex h-full w-full flex-col items-center justify-center ${background} ${textColor}`}
-    >
+    <div tw={`relative flex h-full w-full flex-col items-center justify-center ${background} ${textColor}`}>
       <div
         tw="absolute top-0 left-0 right-0 bottom-0 opacity-50"
         style={{
@@ -33,6 +30,7 @@ export default async function Image() {
           strokeLinecap="round"
           strokeLinejoin="round"
         >
+          <title>Code brackets icon</title>
           <polyline points="16 18 22 12 16 6" />
           <polyline points="8 6 2 12 8 18" />
         </svg>
@@ -44,6 +42,6 @@ export default async function Image() {
       width: 1200,
       height: 630,
       fonts: [],
-    },
+    }
   )
 }

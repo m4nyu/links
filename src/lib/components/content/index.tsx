@@ -1,16 +1,12 @@
-'use client'
+"use client"
 
-import React, { useEffect, Suspense } from 'react'
-import { Provider as JotaiProvider, useAtom, useAtomValue, useSetAtom } from 'jotai'
-import { cn } from '@/lib/utils'
-import { CircleNotchIcon } from '@phosphor-icons/react'
-import { MDXRenderer } from './renderer'
-import { 
-  getMDXContentAtom, 
-  mdxLoadingStatesAtom, 
-  mdxErrorStatesAtom,
-  mdxContentCacheAtom 
-} from './atoms'
+import { CircleNotchIcon } from "@phosphor-icons/react"
+import { Provider as JotaiProvider, useAtomValue, useSetAtom } from "jotai"
+import type React from "react"
+import { Suspense, useEffect } from "react"
+import { cn } from "@/lib/utils"
+import { getMDXContentAtom, mdxContentCacheAtom, mdxErrorStatesAtom, mdxLoadingStatesAtom } from "./atoms"
+import { MDXRenderer } from "./renderer"
 
 const Spinner = ({ className }: { className?: string }) => (
   <div className={cn("flex items-center justify-center w-full h-full min-h-32", className)}>
@@ -28,7 +24,7 @@ const ContentInner: React.FC<ContentProps> = ({ filename, className }) => {
   const loadingStates = useAtomValue(mdxLoadingStatesAtom)
   const errorStates = useAtomValue(mdxErrorStatesAtom)
   const getMDXContent = useSetAtom(getMDXContentAtom)
-  
+
   const content = contentCache[filename]
   const isLoading = loadingStates[filename] || false
   const error = errorStates[filename]
@@ -58,8 +54,6 @@ interface ContentProviderProps {
   children: React.ReactNode
 }
 
-const ContentProvider: React.FC<ContentProviderProps> = ({ children }) => (
-  <JotaiProvider>{children}</JotaiProvider>
-)
+const ContentProvider: React.FC<ContentProviderProps> = ({ children }) => <JotaiProvider>{children}</JotaiProvider>
 
 export { ContentProvider, Content }
