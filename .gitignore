@@ -135,3 +135,6 @@ lib-cov
 # Misc
 *.sublime-project
 *.sublime-workspace
+
+# Claude Code IDE
+.claude/
