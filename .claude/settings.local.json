@@ -14,7 +14,9 @@
       "Bash(bun add:*)",
       "Bash(bun biome check:*)",
       "Bash(bun run lint:*)",
-      "Bash(bun run:*)"
+      "Bash(bun run:*)",
+      "Bash(bun remove:*)",
+      "Bash(rg:*)"
     ],
     "deny": []
   }
