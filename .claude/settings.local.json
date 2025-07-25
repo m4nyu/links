@@ -15,7 +15,12 @@
       "Bash(git add:*)",
       "Bash(git commit:*)",
       "Bash(ls:*)",
-      "Bash(git merge:*)"
+      "Bash(git merge:*)",
+      "Bash(bun biome check:*)",
+      "Bash(bun run lint:*)",
+      "Bash(bun run:*)",
+      "Bash(bun remove:*)",
+      "Bash(rg:*)"
     ],
     "deny": []
   }

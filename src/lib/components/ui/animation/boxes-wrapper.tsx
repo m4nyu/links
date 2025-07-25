@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
-import dynamic from 'next/dynamic'
+import dynamic from "next/dynamic"
 
-const Boxes = dynamic(() => import('./boxes').then(mod => ({ default: mod.Boxes })), {
+const Boxes = dynamic(() => import("./boxes").then((mod) => ({ default: mod.Boxes })), {
   ssr: false,
-  loading: () => null
+  loading: () => null,
 })
 
 export default function BoxesWrapper() {

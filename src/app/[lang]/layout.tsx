@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     url,
     title,
     description,
-    siteName: "Manuel - Portfolio",
+    siteName: "Manuel",
     images: [
       {
         url: "/opengraph-image",
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },
-      { url: "/icon", type: "image/png" }
+      { url: "/icon", type: "image/png" },
     ],
     apple: "/apple-icon",
   },
@@ -77,5 +77,5 @@ export default function LangLayout({ children }: { children: React.ReactNode }) 
         </div>
       </div>
     </ThemeProvider>
-  );
+  )
 }
