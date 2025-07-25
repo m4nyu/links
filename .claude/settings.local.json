@@ -12,7 +12,9 @@
       "Bash(mkdir:*)",
       "Bash(bun update:*)",
       "Bash(bun add:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

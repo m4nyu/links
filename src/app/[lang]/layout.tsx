@@ -3,29 +3,59 @@ import type React from "react"
 import { ThemeProvider } from "@/lib/components/theme-provider"
 import BoxesWrapper from "@/lib/components/ui/animation/boxes-wrapper"
 
-const title = "portfolio"
-const description =
-    "Passionate Founder & Engineer, building the future one line of code at a time. Explore my startups and get in touch."
+const title = "Manuel"
+const description = "Founder and engineer. Portfolio and contact information."
 const url = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000"
 
 export const metadata: Metadata = {
-  title,
+  metadataBase: new URL(url),
+  title: {
+    default: title,
+    template: "%s | Manuel"
+  },
   description,
-  keywords: ["founder", "engineer", "developer", "portfolio", "startups", "manuel"],
+  keywords: ["manuel", "portfolio", "founder", "engineer", "contact"],
   authors: [{ name: "Manuel", url }],
   creator: "Manuel",
+  publisher: "Manuel",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   openGraph: {
     type: "website",
+    locale: "en_US",
     url,
     title,
     description,
-    siteName: "portfolio",
+    siteName: "Manuel - Portfolio",
+    images: [
+      {
+        url: "/opengraph-image",
+        width: 1200,
+        height: 630,
+        alt: "Manuel",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
     title,
     description,
-    creator: "@m4nuel",
+    creator: "@ManuelSzedlak",
+    images: ["/opengraph-image"],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
   icons: {
     icon: [

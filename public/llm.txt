@@ -1,0 +1,21 @@
+# Manuel
+
+## About
+Founder and engineer. This is my portfolio website.
+
+## Contact
+- Twitter/X: @ManuelSzedlak
+- Meeting scheduler available on the site
+
+## Website
+- Portfolio and startup showcase
+- Meeting scheduler integration
+- Multi-language support
+- Clean, minimal design
+
+## Structure
+- Homepage: Introduction and meeting scheduler
+- Startups: My ventures
+- Languages: EN, DE, ES, FR, ZH-CN, JA, PT-BR, RU, HI, AR
+
+Last updated: 2025
