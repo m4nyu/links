@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://manuel.site"
+  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://m4nuel.com"
   
   const languages = ["en", "de", "es", "fr", "zh-CN", "ja", "pt-BR", "ru", "hi", "ar"]
   

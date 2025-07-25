@@ -15,4 +15,4 @@ Allow: /
 # LLM documentation
 # See: /llm.txt
 
-Sitemap: https://manuel.site/sitemap.xml
+Sitemap: https://m4nuel.com/sitemap.xml

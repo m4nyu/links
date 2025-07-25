@@ -6,7 +6,7 @@ import { PersonStructuredData, WebsiteStructuredData } from "@/lib/components/st
 
 const title = "Manuel"
 const description = "Founder and engineer. Portfolio and contact information."
-const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://manuel.site"
+const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://m4nuel.com"
 
 // Locale mapping for OpenGraph
 const localeMap: { [key: string]: string } = {
