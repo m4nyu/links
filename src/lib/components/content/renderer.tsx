@@ -1,8 +1,8 @@
-'use client'
+"use client"
 
-import React from 'react'
-import { MDXRemote, MDXRemoteSerializeResult } from 'next-mdx-remote'
-import { mdxComponents } from './components'
+import { MDXRemote, type MDXRemoteSerializeResult } from "next-mdx-remote"
+import type React from "react"
+import { mdxComponents } from "./components"
 
 interface MDXRendererProps {
   source: MDXRemoteSerializeResult
