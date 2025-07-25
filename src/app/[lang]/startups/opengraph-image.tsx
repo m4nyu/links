@@ -19,24 +19,42 @@ export default async function Image() {
           alignItems: "center",
           justifyContent: "center",
           backgroundColor: "white",
-          fontFamily: "system-ui, -apple-system, sans-serif",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif",
+          position: "relative",
         }}
       >
+        {/* Subtle background pattern */}
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `
+              linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px)
+            `,
+            backgroundSize: "40px 40px",
+          }}
+        />
+        
+        {/* Content */}
         <div
           style={{
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 16,
+            gap: 20,
+            position: "relative",
+            textAlign: "center",
           }}
         >
           <h1
             style={{
-              fontSize: 48,
-              fontWeight: 600,
+              fontSize: 72,
+              fontWeight: 700,
               color: "#09090b",
               margin: 0,
-              letterSpacing: "-0.02em",
+              letterSpacing: "-0.03em",
+              lineHeight: 1,
             }}
           >
             Startups
@@ -44,15 +62,28 @@ export default async function Image() {
           
           <p
             style={{
-              fontSize: 20,
-              fontWeight: 400,
+              fontSize: 24,
+              fontWeight: 500,
               color: "#71717a",
               margin: 0,
+              letterSpacing: "0.02em",
             }}
           >
             by Manuel
           </p>
         </div>
+        
+        {/* Bottom accent line */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 60,
+            left: "25%",
+            right: "25%",
+            height: 2,
+            background: "linear-gradient(to right, transparent, #e5e5e5, transparent)",
+          }}
+        />
       </div>
     ),
     {
