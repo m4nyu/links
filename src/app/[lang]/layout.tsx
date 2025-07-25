@@ -2,6 +2,7 @@ import type { Metadata } from "next"
 import type React from "react"
 import { ThemeProvider } from "@/lib/components/theme-provider"
 import BoxesWrapper from "@/lib/components/ui/animation/boxes-wrapper"
+import { PersonStructuredData, WebsiteStructuredData } from "@/lib/components/structured-data"
 
 const title = "Manuel"
 const description = "Founder and engineer. Portfolio and contact information."
@@ -69,13 +70,17 @@ export const metadata: Metadata = {
 
 export default function LangLayout({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-      <div className="relative min-h-screen w-full overflow-hidden bg-background">
-        <BoxesWrapper />
-        <div className="relative z-10 flex h-full min-h-screen items-center justify-center p-4 pointer-events-none">
-          <div className="pointer-events-auto">{children}</div>
+    <>
+      <PersonStructuredData />
+      <WebsiteStructuredData />
+      <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <div className="relative min-h-screen w-full overflow-hidden bg-background">
+          <BoxesWrapper />
+          <div className="relative z-10 flex h-full min-h-screen items-center justify-center p-4 pointer-events-none">
+            <div className="pointer-events-auto">{children}</div>
+          </div>
         </div>
-      </div>
-    </ThemeProvider>
+      </ThemeProvider>
+    </>
   )
 }
