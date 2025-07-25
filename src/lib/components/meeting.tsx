@@ -16,7 +16,7 @@ export default function Meeting() {
     setIsLoading(true)
     const timer = setTimeout(() => setIsLoading(false), 1500)
     return () => clearTimeout(timer)
-  }, [])
+  }, [resolvedTheme])
 
   return (
     <div className="w-full h-full relative overflow-hidden">

@@ -345,8 +345,8 @@ function PortfolioPageClientInner({
             <DrawerHeader>
               <DrawerTitle>{legalDrawerContent === "imprint" ? "Imprint" : "Privacy Policy"}</DrawerTitle>
             </DrawerHeader>
-            <div className="flex-1 overflow-y-auto p-6">
-              <Content filename={legalDrawerContent === "imprint" ? "imprint" : "privacy-policy"} />
+            <div className="flex-1 overflow-auto px-4 pb-4">
+              {legalDrawerContent && <Content filename={legalDrawerContent === "imprint" ? "imprint" : "privacy-policy"} />}
             </div>
           </DrawerContent>
         </Drawer>
