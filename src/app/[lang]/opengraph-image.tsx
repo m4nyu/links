@@ -29,8 +29,7 @@ export default async function Image() {
             position: "absolute",
             inset: 0,
             backgroundImage: `
-              linear-gradient(rgba(0,0,0,0.02) 1px, transparent 1px),
-              linear-gradient(90deg, rgba(0,0,0,0.02) 1px, transparent 1px)
+              radial-gradient(circle at 1px 1px, rgba(0,0,0,0.03) 1px, transparent 0)
             `,
             backgroundSize: "40px 40px",
           }}
