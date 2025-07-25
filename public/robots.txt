@@ -1,0 +1,18 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+
+# LLM/AI agents
+User-agent: GPTBot
+Allow: /
+User-agent: ChatGPT-User
+Allow: /
+User-agent: CCBot
+Allow: /
+User-agent: Claude-Web
+Allow: /
+
+# LLM documentation
+# See: /llm.txt
+
+Sitemap: https://m4nuel.com/sitemap.xml
