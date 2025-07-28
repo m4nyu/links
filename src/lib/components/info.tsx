@@ -108,7 +108,7 @@ export function InfoCard({ startup }: { startup: Startup }) {
                 if (e.key === "Enter" || e.key === " ") {
                   e.preventDefault()
                   if (!(e.target as Element).closest("button")) {
-                    handleOpenInNewTab(e as React.MouseEvent)
+                    handleOpenInNewTab(e as unknown as React.MouseEvent)
                   }
                 }
               }}
