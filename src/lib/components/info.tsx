@@ -92,18 +92,27 @@ export function InfoCard({ startup }: { startup: Startup }) {
       <ContextMenuTrigger>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <div 
-              role="button" 
-              tabIndex={0} 
-              onMouseEnter={handleMouseEnter} 
+            {/* biome-ignore lint/a11y/useSemanticElements: Using div with role for complex interaction pattern with dialog trigger */}
+            <div
+              role="button"
+              tabIndex={0}
+              onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               onClick={(e) => {
                 // Only handle main card click if not clicking on the share button
-                if (!(e.target as Element).closest('button')) {
+                if (!(e.target as Element).closest("button")) {
                   handleOpenInNewTab(e)
                 }
               }}
-              style={{ cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault()
+                  if (!(e.target as Element).closest("button")) {
+                    handleOpenInNewTab(e as React.MouseEvent)
+                  }
+                }
+              }}
+              style={{ cursor: "pointer", WebkitTapHighlightColor: "transparent" }}
             >
               <Card className="group flex h-[450px] w-full flex-col overflow-hidden border transition-all hover:shadow-md">
                 <div className="flex flex-col h-full">
@@ -130,7 +139,7 @@ export function InfoCard({ startup }: { startup: Startup }) {
                     onClick={handleShare}
                     aria-label={`Share ${startup.title}`}
                     className="size-8"
-                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                    style={{ WebkitTapHighlightColor: "transparent" }}
                   >
                     <AnimatePresence mode="wait" initial={false}>
                       <motion.div
