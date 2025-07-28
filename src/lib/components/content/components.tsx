@@ -124,20 +124,21 @@ export const mdxComponents = {
     const isProtocolLink = href && (href.startsWith("http://") || href.startsWith("https://"))
 
     if (isInternalLink && !href.startsWith("#")) {
-      return <Link href={href} className="text-primary underline-offset-2 hover:underline" {...props} />
+      return <Link href={href} className="text-primary underline-offset-2 hover:underline" style={{ WebkitTapHighlightColor: 'transparent' }} {...props} />
     }
 
     if (isProtocolLink || isMailto) {
       return (
         <a
           className="text-primary underline-offset-2 hover:underline"
+          style={{ WebkitTapHighlightColor: 'transparent' }}
           {...props}
           {...(isProtocolLink ? { target: "_blank", rel: "noopener noreferrer" } : {})}
         />
       )
     }
 
-    return <a className="text-primary underline-offset-2 hover:underline" {...props} />
+    return <a className="text-primary underline-offset-2 hover:underline" style={{ WebkitTapHighlightColor: 'transparent' }} {...props} />
   },
   blockquote: (props: React.HTMLAttributes<HTMLQuoteElement>) => (
     <blockquote className="border-l-4 border-border pl-4 my-4 italic text-sm text-muted-foreground" {...props} />
