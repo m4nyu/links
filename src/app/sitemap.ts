@@ -33,13 +33,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     })
     
-    // Imprint page
-    routes.push({
-      url: `${baseUrl}/${lang}/imprint`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.3,
-    })
+    // Imprint page - temporarily removed
+    // routes.push({
+    //   url: `${baseUrl}/${lang}/imprint`,
+    //   lastModified: new Date(),
+    //   changeFrequency: "yearly",
+    //   priority: 0.3,
+    // })
   })
   
   return routes
