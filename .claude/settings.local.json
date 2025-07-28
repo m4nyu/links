@@ -20,7 +20,9 @@
       "Bash(bun run lint:*)",
       "Bash(bun run:*)",
       "Bash(bun remove:*)",
-      "Bash(rg:*)"
+      "Bash(rg:*)",
+      "Bash(bun install:*)",
+      "Bash(git rm:*)"
     ],
     "deny": []
   }
