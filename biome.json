@@ -24,7 +24,7 @@
         "noArrayIndexKey": "warn"
       }
     },
-    "includes": ["**", "!**/node_modules/**", "!**/.next/**", "!**/dist/**", "!**/build/**"]
+    "includes": ["**", "!**/node_modules/**", "!**/.next/**", "!**/dist/**", "!**/build/**", "!**/.claude/**"]
   },
   "formatter": {
     "enabled": true,
@@ -33,7 +33,7 @@
     "indentWidth": 2,
     "lineWidth": 120,
     "lineEnding": "lf",
-    "includes": ["**", "!**/node_modules/**", "!**/.next/**", "!**/dist/**", "!**/build/**"]
+    "includes": ["**", "!**/node_modules/**", "!**/.next/**", "!**/dist/**", "!**/build/**", "!**/.claude/**"]
   },
   "javascript": {
     "formatter": {
@@ -66,7 +66,8 @@
       "!**/dist/**",
       "!**/build/**",
       "!**/.git/**",
-      "!**/coverage/**"
+      "!**/coverage/**",
+      "!**/.claude/**"
     ]
   },
   "overrides": [
