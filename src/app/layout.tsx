@@ -1,7 +1,7 @@
 import "@/lib/styles/globals.css"
-import type { ReactNode } from "react"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import type { ReactNode } from "react"
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -10,9 +10,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Analytics />
         <SpeedInsights />
       </head>
-      <body>
-        {children}
-      </body>
+      <body>{children}</body>
     </html>
   )
 }
