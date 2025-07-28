@@ -18,7 +18,7 @@ import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "next-themes"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { prefetchMDXContentAtom } from "@/lib/components/content/atoms"
 import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar"
 import { Button } from "@/lib/components/ui/button"
@@ -34,9 +34,67 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
 
-import { Content, ContentProvider } from "@/lib/components/content"
+import { ContentProvider } from "@/lib/components/content"
 
 import type { Locale } from "@/lib/hooks/use-i18n-config"
+
+// Helper function to process image canvas and add to zip
+const processImageToZip = (canvas: HTMLCanvasElement, zip: any, grayscale: boolean = false): Promise<void> => {
+  return new Promise<void>((resolve) => {
+    const ctx = canvas.getContext("2d")
+    if (!ctx) {
+      resolve()
+      return
+    }
+
+    if (grayscale) {
+      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
+      const data = imageData.data
+
+      for (let i = 0; i < data.length; i += 4) {
+        const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114
+        data[i] = gray
+        data[i + 1] = gray
+        data[i + 2] = gray
+      }
+
+      ctx.putImageData(imageData, 0, 0)
+    }
+
+    const prefix = grayscale ? "image-gray" : "image-color"
+    let completed = 0
+    const total = 3
+
+    const checkComplete = () => {
+      completed++
+      if (completed === total) resolve()
+    }
+
+    // Generate PNG, JPG, and WebP versions
+    canvas.toBlob((blob) => {
+      if (blob) zip.file(`${prefix}.png`, blob)
+      checkComplete()
+    }, "image/png")
+
+    canvas.toBlob(
+      (blob) => {
+        if (blob) zip.file(`${prefix}.jpg`, blob)
+        checkComplete()
+      },
+      "image/jpeg",
+      0.9
+    )
+
+    canvas.toBlob(
+      (blob) => {
+        if (blob) zip.file(`${prefix}.webp`, blob)
+        checkComplete()
+      },
+      "image/webp",
+      0.9
+    )
+  })
+}
 
 function PortfolioPageClientInner({
   dictionary,
@@ -49,7 +107,7 @@ function PortfolioPageClientInner({
   const [isShared, setIsShared] = useState(false)
   // const [legalDrawerContent, setLegalDrawerContent] = useState<"imprint" | "privacy" | null>(null)
   const { setTheme } = useTheme()
-  const prefetchContent = useSetAtom(prefetchMDXContentAtom)
+  const _prefetchContent = useSetAtom(prefetchMDXContentAtom)
 
   // useEffect(() => {
   //   prefetchContent(["imprint", "privacy-policy"])
@@ -63,69 +121,17 @@ function PortfolioPageClientInner({
       const img = new window.Image()
       img.crossOrigin = "anonymous"
 
-      const processImage = (grayscale: boolean = false) => {
-        return new Promise<void>((resolve) => {
-          const canvas = document.createElement("canvas")
-          const ctx = canvas.getContext("2d")
+      const processImage = async (grayscale: boolean = false) => {
+        const canvas = document.createElement("canvas")
+        const ctx = canvas.getContext("2d")
 
-          if (!ctx) {
-            resolve()
-            return
-          }
+        if (!ctx) return
 
-          canvas.width = img.width
-          canvas.height = img.height
-          ctx.drawImage(img, 0, 0)
+        canvas.width = img.width
+        canvas.height = img.height
+        ctx.drawImage(img, 0, 0)
 
-          if (grayscale) {
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-            const data = imageData.data
-
-            for (let i = 0; i < data.length; i += 4) {
-              const gray = data[i] * 0.299 + data[i + 1] * 0.587 + data[i + 2] * 0.114
-              data[i] = gray
-              data[i + 1] = gray
-              data[i + 2] = gray
-            }
-
-            ctx.putImageData(imageData, 0, 0)
-          }
-
-          const prefix = grayscale ? "image-gray" : "image-color"
-          let completed = 0
-          const total = 3
-
-          const checkComplete = () => {
-            completed++
-            if (completed === total) resolve()
-          }
-
-          // PNG
-          canvas.toBlob((blob) => {
-            if (blob) zip.file(`${prefix}.png`, blob)
-            checkComplete()
-          }, "image/png")
-
-          // JPG
-          canvas.toBlob(
-            (blob) => {
-              if (blob) zip.file(`${prefix}.jpg`, blob)
-              checkComplete()
-            },
-            "image/jpeg",
-            0.9
-          )
-
-          // WebP
-          canvas.toBlob(
-            (blob) => {
-              if (blob) zip.file(`${prefix}.webp`, blob)
-              checkComplete()
-            },
-            "image/webp",
-            0.9
-          )
-        })
+        await processImageToZip(canvas, zip, grayscale)
       }
 
       img.onload = async () => {

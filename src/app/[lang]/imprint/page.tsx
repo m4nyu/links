@@ -8,7 +8,7 @@ export default async function ImprintPage({ params }: { params: Promise<{ lang: 
   const _params = await params
   // Temporarily block access to imprint page
   notFound()
-  
+
   // const content = await getMDXContent("imprint")
   // if (!content) {
   //   notFound()
