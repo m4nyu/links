@@ -32,10 +32,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
 
-
 import type { Locale } from "@/lib/hooks/use-i18n-config"
 
 // Helper function to process image canvas and add to zip
+// biome-ignore lint/suspicious/noExplicitAny: JSZip type is complex and any is acceptable for this utility function
 const processImageToZip = (canvas: HTMLCanvasElement, zip: any, grayscale: boolean = false): Promise<void> => {
   return new Promise<void>((resolve) => {
     const ctx = canvas.getContext("2d")

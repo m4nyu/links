@@ -27,6 +27,7 @@ export function PersonStructuredData() {
     },
   }
 
+  // biome-ignore lint/security/noDangerouslySetInnerHtml: Structured data requires JSON-LD script injection for SEO
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 }
 
@@ -55,5 +56,6 @@ export function WebsiteStructuredData() {
     },
   }
 
+  // biome-ignore lint/security/noDangerouslySetInnerHtml: Structured data requires JSON-LD script injection for SEO
   return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 }

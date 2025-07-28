@@ -11,6 +11,7 @@ export default function Meeting() {
   const [key, setKey] = useState(0)
 
   // Force complete re-render when theme changes
+  // biome-ignore lint/correctness/useExhaustiveDependencies: resolvedTheme dependency is intentional for theme-based re-renders
   useEffect(() => {
     setKey(Date.now())
     setIsLoading(true)
