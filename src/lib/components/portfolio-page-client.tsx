@@ -47,13 +47,13 @@ function PortfolioPageClientInner({
 }) {
   const [isMeetingOpen, setIsMeetingOpen] = useState(false)
   const [isShared, setIsShared] = useState(false)
-  const [legalDrawerContent, setLegalDrawerContent] = useState<"imprint" | "privacy" | null>(null)
+  // const [legalDrawerContent, setLegalDrawerContent] = useState<"imprint" | "privacy" | null>(null)
   const { setTheme } = useTheme()
   const prefetchContent = useSetAtom(prefetchMDXContentAtom)
 
-  useEffect(() => {
-    prefetchContent(["imprint", "privacy-policy"])
-  }, [prefetchContent])
+  // useEffect(() => {
+  //   prefetchContent(["imprint", "privacy-policy"])
+  // }, [prefetchContent])
 
   const downloadAllImages = async () => {
     try {
@@ -319,6 +319,7 @@ function PortfolioPageClientInner({
           </Tooltip>
         </div>
 
+        {/* Legal links temporarily removed
         <div className="w-full max-w-[280px] space-y-2 text-center">
           <div className="flex justify-center space-x-4 text-xs">
             <Button
@@ -350,6 +351,7 @@ function PortfolioPageClientInner({
             </div>
           </DrawerContent>
         </Drawer>
+        */}
       </div>
     </TooltipProvider>
   )
