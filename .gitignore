@@ -134,4 +134,4 @@ lib-cov
 
 # Misc
 *.sublime-project
-*.sublime-workspace
+*.sublime-workspace.claude/settings.local.json
