@@ -13,13 +13,11 @@ import {
   XLogoIcon,
 } from "@phosphor-icons/react"
 import { AnimatePresence, motion } from "framer-motion"
-import { useSetAtom } from "jotai"
 import dynamic from "next/dynamic"
 import Image from "next/image"
 import Link from "next/link"
 import { useTheme } from "next-themes"
 import { useState } from "react"
-import { prefetchMDXContentAtom } from "@/lib/components/content/atoms"
 import { Avatar, AvatarFallback } from "@/lib/components/ui/avatar"
 import { Button } from "@/lib/components/ui/button"
 import {
@@ -34,7 +32,6 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
 
-import { ContentProvider } from "@/lib/components/content"
 
 import type { Locale } from "@/lib/hooks/use-i18n-config"
 
@@ -105,13 +102,7 @@ function PortfolioPageClientInner({
 }) {
   const [isMeetingOpen, setIsMeetingOpen] = useState(false)
   const [isShared, setIsShared] = useState(false)
-  // const [legalDrawerContent, setLegalDrawerContent] = useState<"imprint" | "privacy" | null>(null)
   const { setTheme } = useTheme()
-  const _prefetchContent = useSetAtom(prefetchMDXContentAtom)
-
-  // useEffect(() => {
-  //   prefetchContent(["imprint", "privacy-policy"])
-  // }, [prefetchContent])
 
   const downloadAllImages = async () => {
     try {
@@ -367,9 +358,5 @@ export default function PortfolioPageClient(props: {
   dictionary: { portfolio: { [key: string]: string } }
   lang: Locale
 }) {
-  return (
-    <ContentProvider>
-      <PortfolioPageClientInner {...props} />
-    </ContentProvider>
-  )
+  return <PortfolioPageClientInner {...props} />
 }
