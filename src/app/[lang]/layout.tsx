@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import type React from "react"
+import { PersonStructuredData, WebsiteStructuredData } from "@/lib/components/structured-data"
 import { ThemeProvider } from "@/lib/components/theme-provider"
 import BoxesWrapper from "@/lib/components/ui/animation/boxes-wrapper"
-import { PersonStructuredData, WebsiteStructuredData } from "@/lib/components/structured-data"
 
 const title = "Manuel"
 const description = "Founder and engineer. Portfolio and contact information."
@@ -10,28 +10,28 @@ const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "
 
 // Locale mapping for OpenGraph
 const localeMap: { [key: string]: string } = {
-  'en': 'en_US',
-  'de': 'de_DE', 
-  'es': 'es_ES',
-  'fr': 'fr_FR',
-  'zh-CN': 'zh_CN',
-  'ja': 'ja_JP',
-  'pt-BR': 'pt_BR',
-  'ru': 'ru_RU',
-  'hi': 'hi_IN',
-  'ar': 'ar_SA'
+  en: "en_US",
+  de: "de_DE",
+  es: "es_ES",
+  fr: "fr_FR",
+  "zh-CN": "zh_CN",
+  ja: "ja_JP",
+  "pt-BR": "pt_BR",
+  ru: "ru_RU",
+  hi: "hi_IN",
+  ar: "ar_SA",
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
   const { lang } = await params
   const url = `${baseUrl}/${lang}`
-  const ogLocale = localeMap[lang] || 'en_US'
+  const ogLocale = localeMap[lang] || "en_US"
 
   return {
     metadataBase: new URL(baseUrl),
     title: {
       default: title,
-      template: "%s | Manuel"
+      template: "%s | Manuel",
     },
     description,
     keywords: ["manuel", "portfolio", "founder", "engineer", "contact"],
@@ -89,26 +89,22 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     alternates: {
       canonical: url,
       languages: {
-        'en': `${baseUrl}/en`,
-        'de': `${baseUrl}/de`,
-        'es': `${baseUrl}/es`,
-        'fr': `${baseUrl}/fr`,
-        'zh-CN': `${baseUrl}/zh-CN`,
-        'ja': `${baseUrl}/ja`,
-        'pt-BR': `${baseUrl}/pt-BR`,
-        'ru': `${baseUrl}/ru`,
-        'hi': `${baseUrl}/hi`,
-        'ar': `${baseUrl}/ar`,
-      }
-    }
+        en: `${baseUrl}/en`,
+        de: `${baseUrl}/de`,
+        es: `${baseUrl}/es`,
+        fr: `${baseUrl}/fr`,
+        "zh-CN": `${baseUrl}/zh-CN`,
+        ja: `${baseUrl}/ja`,
+        "pt-BR": `${baseUrl}/pt-BR`,
+        ru: `${baseUrl}/ru`,
+        hi: `${baseUrl}/hi`,
+        ar: `${baseUrl}/ar`,
+      },
+    },
   }
 }
 
-export default function LangLayout({ 
-  children
-}: { 
-  children: React.ReactNode
-}) {
+export default function LangLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
       <PersonStructuredData />
