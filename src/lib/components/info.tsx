@@ -92,53 +92,64 @@ export function InfoCard({ startup }: { startup: Startup }) {
       <ContextMenuTrigger>
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <div role="button" tabIndex={0} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-              <a href={startup.liveUrl} target="_blank" rel="noopener noreferrer" className="block">
-                <Card className="group flex h-[450px] w-full flex-col overflow-hidden border transition-all hover:shadow-md">
-                  <div className="flex flex-col h-full">
-                    <div className="h-56 overflow-hidden bg-muted">
-                      <Image
-                        src={startup.image || "/placeholder.svg"}
-                        alt={`Screenshot of ${startup.title}`}
-                        width={400}
-                        height={224}
-                        className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                      />
-                    </div>
-                    <div className="flex-1 p-6 flex flex-col">
-                      <CardTitle className="mb-2 text-xl font-bold line-clamp-2">{startup.title}</CardTitle>
-                      <CardDescription className="text-balance text-muted-foreground line-clamp-3 flex-1">
-                        {startup.description}
-                      </CardDescription>
-                    </div>
+            <div 
+              role="button" 
+              tabIndex={0} 
+              onMouseEnter={handleMouseEnter} 
+              onMouseLeave={handleMouseLeave}
+              onClick={(e) => {
+                // Only handle main card click if not clicking on the share button
+                if (!(e.target as Element).closest('button')) {
+                  handleOpenInNewTab(e)
+                }
+              }}
+              style={{ cursor: 'pointer', WebkitTapHighlightColor: 'transparent' }}
+            >
+              <Card className="group flex h-[450px] w-full flex-col overflow-hidden border transition-all hover:shadow-md">
+                <div className="flex flex-col h-full">
+                  <div className="h-56 overflow-hidden bg-muted">
+                    <Image
+                      src={startup.image || "/placeholder.svg"}
+                      alt={`Screenshot of ${startup.title}`}
+                      width={400}
+                      height={224}
+                      className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    />
                   </div>
-                  <div className="mt-auto flex items-center justify-end border-t p-2">
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={handleShare}
-                      aria-label={`Share ${startup.title}`}
-                      className="size-8"
-                    >
-                      <AnimatePresence mode="wait" initial={false}>
-                        <motion.div
-                          key={isShared ? "check" : "share"}
-                          initial={{ opacity: 0, scale: 0.5 }}
-                          animate={{ opacity: 1, scale: 1 }}
-                          exit={{ opacity: 0, scale: 0.5 }}
-                          transition={{ duration: 0.2 }}
-                        >
-                          {isShared ? (
-                            <CheckIcon className="size-4 text-green-600" />
-                          ) : (
-                            <ShareNetworkIcon className="size-4" />
-                          )}
-                        </motion.div>
-                      </AnimatePresence>
-                    </Button>
+                  <div className="flex-1 p-6 flex flex-col">
+                    <CardTitle className="mb-2 text-xl font-bold line-clamp-2">{startup.title}</CardTitle>
+                    <CardDescription className="text-balance text-muted-foreground line-clamp-3 flex-1">
+                      {startup.description}
+                    </CardDescription>
                   </div>
-                </Card>
-              </a>
+                </div>
+                <div className="mt-auto flex items-center justify-end border-t p-2">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleShare}
+                    aria-label={`Share ${startup.title}`}
+                    className="size-8"
+                    style={{ WebkitTapHighlightColor: 'transparent' }}
+                  >
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.div
+                        key={isShared ? "check" : "share"}
+                        initial={{ opacity: 0, scale: 0.5 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.5 }}
+                        transition={{ duration: 0.2 }}
+                      >
+                        {isShared ? (
+                          <CheckIcon className="size-4 text-green-600" />
+                        ) : (
+                          <ShareNetworkIcon className="size-4" />
+                        )}
+                      </motion.div>
+                    </AnimatePresence>
+                  </Button>
+                </div>
+              </Card>
             </div>
           </DialogTrigger>
           <DialogPortal>
