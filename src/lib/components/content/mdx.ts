@@ -36,6 +36,11 @@ const extractFrontmatter = (content: string) => {
 export const getMDXContent = cache(async (filename: string): Promise<MDXContent | null> => {
   if (!isValidFile(filename)) return null
 
+  // Temporarily block access to legal content
+  if (filename === "imprint" || filename === "privacy-policy") {
+    return null
+  }
+
   try {
     const filePath = path.join(CONTENT_DIR, `${filename}.mdx`)
     const rawContent = await fs.readFile(filePath, "utf-8")
