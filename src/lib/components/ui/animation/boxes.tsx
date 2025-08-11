@@ -6,8 +6,8 @@ import { cn } from "@/lib/utils"
 
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const { resolvedTheme } = useTheme()
-  const rows = new Array(200).fill(1)
-  const cols = new Array(150).fill(1)
+  const rows = new Array(250).fill(1)
+  const cols = new Array(200).fill(1)
   const hoverColor = resolvedTheme === "dark" ? "#fff" : "#18181b"
   const blurColor = resolvedTheme === "dark" ? "0, 0, 0" : "255, 255, 255"
 
@@ -15,18 +15,18 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
     <div className="absolute inset-0 z-10">
       <motion.div
         initial={{
-          transform: "translate(-25%, -25%) skewX(-48deg) skewY(14deg) scale(1.2)",
+          transform: "translate(-50%, -50%) skewX(-48deg) skewY(14deg) scale(1.5)",
         }}
         animate={{
-          transform: "translate(-15%, -35%) skewX(-48deg) skewY(14deg) scale(1.2)",
+          transform: "translate(-40%, -60%) skewX(-48deg) skewY(14deg) scale(1.5)",
         }}
         transition={{
-          duration: 30,
+          duration: 35,
           ease: "linear",
           repeat: Infinity,
           repeatType: "loop",
         }}
-        className={cn("pointer-events-auto absolute inset-0 flex h-[300%] w-[300%]", className)}
+        className={cn("pointer-events-auto absolute inset-0 flex h-[500%] w-[500%]", className)}
         {...rest}
       >
         {rows.map((_, i) => (
