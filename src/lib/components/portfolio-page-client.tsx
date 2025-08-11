@@ -28,6 +28,7 @@ import {
   ContextMenuTrigger,
 } from "@/lib/components/ui/context-menu"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/lib/components/ui/drawer"
+import { ScrollArea } from "@/lib/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip"
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
@@ -242,11 +243,13 @@ function PortfolioPageClientInner({
                 <p>{dictionary.portfolio.scheduleMeetingTooltip}</p>
               </TooltipContent>
             </Tooltip>
-            <DrawerContent className="h-[90vh] max-h-[800px]">
-              <DrawerHeader>
+            <DrawerContent className="h-[100vh] max-h-none flex flex-col">
+              <DrawerHeader className="shrink-0">
                 <DrawerTitle>{dictionary.portfolio.scheduleMeeting}</DrawerTitle>
               </DrawerHeader>
-              <div className="flex-1 overflow-hidden">{isMeetingOpen && <Meeting />}</div>
+              <ScrollArea className="flex-1">
+                <div className="min-h-[600px]">{isMeetingOpen && <Meeting />}</div>
+              </ScrollArea>
             </DrawerContent>
           </Drawer>
         </div>

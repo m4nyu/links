@@ -20,7 +20,7 @@ export default function Meeting() {
   }, [resolvedTheme])
 
   return (
-    <div className="w-full h-full relative overflow-hidden">
+    <div className="w-full h-full relative min-h-[600px]">
       {/* Loading overlay */}
       {isLoading && (
         <div className="absolute inset-0 flex items-center justify-center bg-background z-50">
@@ -28,42 +28,25 @@ export default function Meeting() {
         </div>
       )}
 
-      {/* Cal.com embed with bottom masking */}
-      <div className="w-full h-full relative overflow-hidden">
-        <div
-          className="absolute top-0 left-0 right-0"
+      {/* Cal.com embed */}
+      <div className="w-full h-full relative [&_iframe]:border-0 [&_iframe]:outline-0 [&_iframe]:rounded-none [&_*]:!rounded-none">
+        <Cal
+          key={`cal-${key}-${resolvedTheme || "system"}`}
+          calLink="m4nuel/30min"
           style={{
-            height: "calc(100% + 100px)",
-            bottom: "-100px",
+            width: "100%",
+            height: "100%",
+            border: "none",
+            borderRadius: "0",
+            background: "transparent",
           }}
-        >
-          <Cal
-            key={`cal-${key}-${resolvedTheme || "system"}`}
-            calLink="m4nuel/30min"
-            style={{
-              width: "100%",
-              height: "100%",
-              border: "none",
-              borderRadius: "0",
-              background: "transparent",
-            }}
-            config={{
-              layout: "month_view",
-              theme: resolvedTheme === "dark" ? "dark" : "light",
-              hideEventTypeDetails: "false",
-              branding: {
-                hideBranding: "true",
-              },
-            }}
-          />
-        </div>
-
-        {/* Bottom overlay to hide Cal.com branding */}
-        <div
-          className="absolute bottom-0 left-0 right-0 bg-background pointer-events-none"
-          style={{
-            height: "100px",
-            zIndex: 100,
+          config={{
+            layout: "month_view",
+            theme: resolvedTheme === "dark" ? "dark" : "light",
+            hideEventTypeDetails: "false",
+            branding: {
+              hideBranding: "true",
+            },
           }}
         />
       </div>
