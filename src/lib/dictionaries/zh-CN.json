@@ -2,8 +2,6 @@
   "portfolio": {
     "name": "约翰·多伊",
     "tagline": "创始人兼工程师",
-    "myWork": "我的工作",
-    "myWorkTooltip": "查看我的项目和初创公司。",
     "scheduleMeeting": "安排会议",
     "scheduleMeetingTooltip": "在我的日历上预订一个时间段。",
     "visitBlog": "访问我的博客",
