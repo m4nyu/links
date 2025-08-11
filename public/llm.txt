@@ -7,7 +7,7 @@ Manuel is a founder and engineer. This is his personal portfolio website showcas
 - Website: https://m4nuel.com
 - Twitter/X: https://x.com/ManuelSzedlak
 - LinkedIn: https://www.linkedin.com/in/manuel-szedlak
-- GitHub: https://github.com/manuel-lambda
+- GitHub: https://github.com/m4nyu
 - Meeting Scheduler: Available on the website
 
 ## Expertise

@@ -8,11 +8,7 @@ export function PersonStructuredData() {
     description: "Founder and engineer. Portfolio and contact information.",
     url: "https://m4nuel.com",
     image: "https://m4nuel.com/image.jpg",
-    sameAs: [
-      "https://github.com/manuel-lambda",
-      "https://www.linkedin.com/in/manuel-szedlak",
-      "https://x.com/ManuelSzedlak",
-    ],
+    sameAs: ["https://github.com/m4nyu", "https://www.linkedin.com/in/manuel-szedlak", "https://x.com/ManuelSzedlak"],
     knowsAbout: [
       "Software Engineering",
       "Entrepreneurship",
