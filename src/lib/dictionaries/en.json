@@ -11,13 +11,8 @@
     "twitterTooltip": "Follow me on X for tech insights and updates",
     "shareTooltip": "Share this portfolio with others",
     "shareCopiedTooltip": "Portfolio link copied to clipboard!",
-    "shareTitle": "Manuel's Portfolio",
-    "shareText": "Check out Manuel's portfolio - a passionate Founder & Engineer."
-  },
-  "startups": {
-    "backToHome": "Back to homepage",
-    "pageTitle": "My Startups",
-    "pageDescription": "Projects by Manuel"
+    "shareTitle": "Manuel's Links",
+    "shareText": "Check out Manuel's links - a passionate Founder & Engineer."
   },
   "meeting": {
     "title": "Schedule a meeting with me"
