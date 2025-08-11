@@ -76,7 +76,6 @@ export function InfoCard({ startup }: { startup: Startup }) {
       clearTimeout(hoverTimeout)
       setHoverTimeout(null)
     }
-    // Removed automatic closing
   }
 
   useEffect(() => {

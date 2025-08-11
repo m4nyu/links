@@ -2,8 +2,6 @@
   "portfolio": {
     "name": "ジョン・ドウ",
     "tagline": "創設者兼エンジニア",
-    "myWork": "私の仕事",
-    "myWorkTooltip": "私のプロジェクトとスタートアップをご覧ください。",
     "scheduleMeeting": "会議のスケジュール",
     "scheduleMeetingTooltip": "私のカレンダーで時間枠を予約してください。",
     "visitBlog": "ブログにアクセス",
