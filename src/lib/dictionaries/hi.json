@@ -2,8 +2,6 @@
   "portfolio": {
     "name": "जॉन डो",
     "tagline": "संस्थापक और इंजीनियर",
-    "myWork": "मेरा काम",
-    "myWorkTooltip": "मेरे प्रोजेक्ट और स्टार्टअप देखें।",
     "scheduleMeeting": "एक मीटिंग शेड्यूल करें",
     "scheduleMeetingTooltip": "मेरे कैलेंडर पर एक टाइम स्लॉट बुक करें।",
     "visitBlog": "मेरे ब्लॉग पर जाएँ",

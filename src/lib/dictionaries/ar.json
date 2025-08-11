@@ -2,8 +2,6 @@
   "portfolio": {
     "name": "جون دو",
     "tagline": "مؤسس ومهندس",
-    "myWork": "عملي",
-    "myWorkTooltip": "شاهد مشاريعي وشركاتي الناشئة.",
     "scheduleMeeting": "تحديد موعد اجتماع",
     "scheduleMeetingTooltip": "احجز فترة زمنية في تقويمي.",
     "visitBlog": "زيارة مدونتي",

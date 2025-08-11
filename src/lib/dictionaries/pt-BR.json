@@ -2,8 +2,6 @@
   "portfolio": {
     "name": "Manuel",
     "tagline": "Fundador e Engenheiro",
-    "myWork": "MEU TRABALHO",
-    "myWorkTooltip": "Veja meus projetos e startups.",
     "scheduleMeeting": "AGENDAR UMA REUNIÃO",
     "scheduleMeetingTooltip": "Reserve um horário na minha agenda.",
     "visitBlog": "VISITE MEU BLOG",
