@@ -25,13 +25,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     })
 
-    // Startups page
-    routes.push({
-      url: `${baseUrl}/${lang}/startups`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
-    })
   })
 
   return routes

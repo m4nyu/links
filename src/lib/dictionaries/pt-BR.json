@@ -11,13 +11,8 @@
     "twitterTooltip": "X (antigo Twitter)",
     "shareTooltip": "Compartilhar",
     "shareCopiedTooltip": "Link copiado!",
-    "shareTitle": "Portfólio de Manuel",
-    "shareText": "Confira o portfólio de Manuel - um Fundador e Engenheiro apaixonado."
-  },
-  "startups": {
-    "backToHome": "Voltar para a página inicial",
-    "pageTitle": "Minhas Startups",
-    "pageDescription": "Projetos de Manuel"
+    "shareTitle": "Links de Manuel",
+    "shareText": "Confira os links de Manuel - um Fundador e Engenheiro apaixonado."
   },
   "meeting": {
     "title": "Agende uma reunião comigo"
