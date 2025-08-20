@@ -48,7 +48,7 @@
     "@tailwindcss/postcss": "^4.1.11",
     "@tailwindcss/upgrade": "^4.1.11",
     "@types/negotiator": "^0.6.4",
-    "@types/node": "^22.16.5",
+    "@types/node": "^24.3.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
     "postcss": "^8.5.6",
