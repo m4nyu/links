@@ -2,8 +2,6 @@
   "portfolio": {
     "name": "Manuel",
     "tagline": "Gründer & Ingenieur",
-    "myWork": "MEINE ARBEIT",
-    "myWorkTooltip": "Sehen Sie sich meine Projekte und Startups an.",
     "scheduleMeeting": "TERMIN VEREINBAREN",
     "scheduleMeetingTooltip": "Buchen Sie eine Zeit in meinem Kalender.",
     "visitBlog": "MEINEN BLOG BESUCHEN",
@@ -13,13 +11,8 @@
     "twitterTooltip": "X (ehemals Twitter)",
     "shareTooltip": "Teilen",
     "shareCopiedTooltip": "Link kopiert!",
-    "shareTitle": "Manuels Portfolio",
-    "shareText": "Schauen Sie sich das Portfolio von Manuel an - ein leidenschaftlicher Gründer & Ingenieur."
-  },
-  "startups": {
-    "backToHome": "Zurück zur Startseite",
-    "pageTitle": "Meine Startups",
-    "pageDescription": "Projekte von Manuel"
+    "shareTitle": "Manuels Links",
+    "shareText": "Schauen Sie sich die Links von Manuel an - ein leidenschaftlicher Gründer & Ingenieur."
   },
   "meeting": {
     "title": "Vereinbaren Sie einen Termin mit mir"

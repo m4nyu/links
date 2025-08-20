@@ -4,7 +4,7 @@ import { PersonStructuredData, WebsiteStructuredData } from "@/lib/components/st
 import { ThemeProvider } from "@/lib/components/theme-provider"
 import BoxesWrapper from "@/lib/components/ui/animation/boxes-wrapper"
 
-const title = "Manuel"
+const title = "links"
 const description = "Founder and engineer. Portfolio and contact information."
 const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://m4nuel.com"
 
@@ -31,13 +31,13 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     metadataBase: new URL(baseUrl),
     title: {
       default: title,
-      template: "%s | Manuel",
+      template: "%s | links",
     },
     description,
     keywords: ["manuel", "portfolio", "founder", "engineer", "contact"],
-    authors: [{ name: "Manuel", url: baseUrl }],
-    creator: "Manuel",
-    publisher: "Manuel",
+    authors: [{ name: "links", url: baseUrl }],
+    creator: "links",
+    publisher: "links",
     formatDetection: {
       email: false,
       address: false,
@@ -49,13 +49,13 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       url,
       title,
       description,
-      siteName: "Manuel",
+      siteName: "links",
       images: [
         {
           url: `${baseUrl}/${lang}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: "Manuel",
+          alt: "links",
           type: "image/png",
         },
       ],
