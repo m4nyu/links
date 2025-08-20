@@ -24,7 +24,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: "monthly",
       priority: 1,
     })
-
     // Startups page
     routes.push({
       url: `${baseUrl}/${lang}/startups`,
