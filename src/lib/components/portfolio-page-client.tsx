@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  ArticleIcon,
   CalendarCheckIcon,
   CheckIcon,
   DownloadSimpleIcon,
@@ -28,6 +29,7 @@ import {
   ContextMenuTrigger,
 } from "@/lib/components/ui/context-menu"
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/lib/components/ui/drawer"
+import { ScrollArea } from "@/lib/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip"
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
@@ -218,12 +220,15 @@ function PortfolioPageClientInner({
         <div className="flex w-full max-w-[280px] flex-col space-y-2">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button disabled className="w-full uppercase font-semibold tracking-wider opacity-50 cursor-not-allowed">
-                {dictionary.portfolio.myWork} - Coming Soon
+              <Button asChild className="w-full uppercase font-semibold tracking-wider">
+                <Link href="https://m4nuel.blog" target="_blank">
+                  {dictionary.portfolio.visitBlog || "My Blog"}
+                  <ArticleIcon className="size-4" />
+                </Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>Portfolio coming soon</p>
+              <p>Visit my blog for articles and insights</p>
             </TooltipContent>
           </Tooltip>
           <Drawer open={isMeetingOpen} onOpenChange={setIsMeetingOpen}>
@@ -242,11 +247,13 @@ function PortfolioPageClientInner({
                 <p>{dictionary.portfolio.scheduleMeetingTooltip}</p>
               </TooltipContent>
             </Tooltip>
-            <DrawerContent className="h-[90vh] max-h-[800px]">
-              <DrawerHeader>
+            <DrawerContent className="h-[100vh] max-h-none flex flex-col">
+              <DrawerHeader className="shrink-0">
                 <DrawerTitle>{dictionary.portfolio.scheduleMeeting}</DrawerTitle>
               </DrawerHeader>
-              <div className="flex-1 overflow-hidden">{isMeetingOpen && <Meeting />}</div>
+              <ScrollArea className="flex-1">
+                <div className="min-h-[600px] flex items-center justify-center">{isMeetingOpen && <Meeting />}</div>
+              </ScrollArea>
             </DrawerContent>
           </Drawer>
         </div>
@@ -255,7 +262,7 @@ function PortfolioPageClientInner({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button variant="outline" size="icon" asChild>
-                <Link href="https://github.com/manuel-lambda" target="_blank" aria-label="GitHub">
+                <Link href="https://github.com/m4nyu" target="_blank" aria-label="GitHub">
                   <GithubLogoIcon className="size-5" />
                 </Link>
               </Button>
@@ -315,40 +322,6 @@ function PortfolioPageClientInner({
             </TooltipContent>
           </Tooltip>
         </div>
-
-        {/* Legal links temporarily removed
-        <div className="w-full max-w-[280px] space-y-2 text-center">
-          <div className="flex justify-center space-x-4 text-xs">
-            <Button
-              variant="link"
-              className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
-              onClick={() => setLegalDrawerContent("imprint")}
-              onMouseEnter={() => prefetchContent(["imprint"])}
-            >
-              Imprint
-            </Button>
-            <Button
-              variant="link"
-              className="h-auto p-0 text-xs text-muted-foreground hover:text-foreground"
-              onClick={() => setLegalDrawerContent("privacy")}
-              onMouseEnter={() => prefetchContent(["privacy-policy"])}
-            >
-              Privacy Policy
-            </Button>
-          </div>
-        </div>
-
-        <Drawer open={!!legalDrawerContent} onOpenChange={(open) => !open && setLegalDrawerContent(null)}>
-          <DrawerContent className="h-[90vh] max-h-[800px]">
-            <DrawerHeader>
-              <DrawerTitle>{legalDrawerContent === "imprint" ? "Imprint" : "Privacy Policy"}</DrawerTitle>
-            </DrawerHeader>
-            <div className="flex-1 overflow-auto px-4 pb-4">
-              {legalDrawerContent && <Content filename={legalDrawerContent === "imprint" ? "imprint" : "privacy-policy"} />}
-            </div>
-          </DrawerContent>
-        </Drawer>
-        */}
       </div>
     </TooltipProvider>
   )

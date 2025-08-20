@@ -5,20 +5,15 @@ export function PersonStructuredData() {
     name: "Manuel",
     alternateName: "Manuel Szedlak",
     jobTitle: "Founder & Engineer",
-    description: "Founder and engineer. Portfolio and contact information.",
+    description: "Founder and engineer. Links and contact information.",
     url: "https://m4nuel.com",
     image: "https://m4nuel.com/image.jpg",
-    sameAs: [
-      "https://github.com/manuel-lambda",
-      "https://www.linkedin.com/in/manuel-szedlak",
-      "https://x.com/ManuelSzedlak",
-    ],
+    sameAs: ["https://github.com/m4nyu", "https://www.linkedin.com/in/manuel-szedlak", "https://x.com/ManuelSzedlak"],
     knowsAbout: [
       "Software Engineering",
       "Entrepreneurship",
       "Full-stack Development",
       "Web Development",
-      "Startup Founding",
       "Product Development",
     ],
     worksFor: {
@@ -35,10 +30,10 @@ export function WebsiteStructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "Manuel - Portfolio",
-    alternateName: "Manuel Szedlak Portfolio",
+    name: "Manuel - Links",
+    alternateName: "Manuel Szedlak Links",
     url: "https://m4nuel.com",
-    description: "Founder and engineer. Portfolio and contact information.",
+    description: "Founder and engineer. Links and contact information.",
     author: {
       "@type": "Person",
       name: "Manuel",

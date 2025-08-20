@@ -2,8 +2,6 @@
   "portfolio": {
     "name": "Manuel",
     "tagline": "Fondateur & Ingénieur",
-    "myWork": "MON TRAVAIL",
-    "myWorkTooltip": "Découvrez mon portfolio de startups et projets techniques",
     "scheduleMeeting": "PLANIFIER UNE RÉUNION",
     "scheduleMeetingTooltip": "Réservez un appel de 30 minutes pour discuter d'opportunités",
     "visitBlog": "VISITER MON BLOG",
@@ -13,13 +11,8 @@
     "twitterTooltip": "Suivez-moi sur X pour des insights tech et actualités",
     "shareTooltip": "Partagez ce portfolio avec d'autres",
     "shareCopiedTooltip": "Lien du portfolio copié dans le presse-papiers !",
-    "shareTitle": "Portfolio de Manuel",
-    "shareText": "Découvrez le portfolio de Manuel - un fondateur et ingénieur passionné."
-  },
-  "startups": {
-    "backToHome": "Retour à l'accueil",
-    "pageTitle": "Mes Startups",
-    "pageDescription": "Projets par Manuel"
+    "shareTitle": "Liens de Manuel",
+    "shareText": "Découvrez les liens de Manuel - un fondateur et ingénieur passionné."
   },
   "meeting": {
     "title": "Planifiez une réunion avec moi"
