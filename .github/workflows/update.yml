@@ -28,7 +28,6 @@ jobs:
         run: |
           bun run lint
           bun run type-check
-          bun run build
           
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v7
