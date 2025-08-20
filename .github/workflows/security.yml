@@ -2,9 +2,9 @@ name: Security
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main]
   pull_request:
-    branches: [main, develop]
+    branches: [main]
   schedule:
     # Run weekly on Sundays at 2 AM UTC
     - cron: '0 2 * * 0'
@@ -14,19 +14,12 @@ jobs:
     name: Dependency Security Check
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
-
-      - name: Install dependencies
-        run: bun install
-
-      - name: Audit dependencies
-        run: bun audit
+      - run: bun install
+      - run: bun audit
 
   codeql:
     name: CodeQL Analysis
@@ -36,16 +29,9 @@ jobs:
       contents: read
       security-events: write
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v3
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
         with:
           languages: javascript
-
-      - name: Autobuild
-        uses: github/codeql-action/autobuild@v3
-
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v3
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3
