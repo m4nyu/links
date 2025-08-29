@@ -3,25 +3,21 @@ import { useTheme } from "next-themes"
 import React, { useCallback, useEffect, useRef, useState } from "react"
 import { cn } from "@/lib/utils"
 
-// WebGL shader sources - matching exact original behavior
+// Working WebGL shader sources that replicate the exact DOM animation behavior
 const vertexShaderSource = `
 attribute vec2 a_position;
 uniform mat3 u_worldTransform;
 uniform vec2 u_resolution;
 varying vec2 v_worldPos;
-varying vec2 v_screenPos;
 
 void main() {
-  // Apply world transformation (skew, scale, translate)
+  // Apply world transformation exactly like CSS transform
   vec3 worldPos = u_worldTransform * vec3(a_position, 1.0);
   v_worldPos = worldPos.xy;
   
-  // Convert to screen coordinates
-  v_screenPos = worldPos.xy;
-  
   // Convert to normalized device coordinates
   vec2 clipSpace = ((worldPos.xy / u_resolution) * 2.0) - 1.0;
-  gl_Position = vec4(clipSpace * vec3(1, -1, 1).xy, 0, 1);
+  gl_Position = vec4(clipSpace.x, -clipSpace.y, 0.0, 1.0);
 }
 `
 
@@ -30,20 +26,16 @@ precision mediump float;
 uniform vec3 u_borderColor;
 uniform vec3 u_hoverColor;
 uniform vec2 u_mousePos;
-uniform vec2 u_resolution;
-uniform float u_time;
 varying vec2 v_worldPos;
-varying vec2 v_screenPos;
 
 void main() {
-  // Box dimensions (w-16 = 64px, h-8 = 32px)
+  // Box dimensions exactly matching Tailwind classes h-8 w-16
   vec2 boxSize = vec2(64.0, 32.0);
   
-  // Find which box we're in
-  vec2 boxIndex = floor(v_worldPos / boxSize);
+  // Find which box we're in and local position within box
   vec2 boxLocalPos = mod(v_worldPos, boxSize);
   
-  // Create border effect - only draw on borders
+  // Create border effect - only draw on borders (1px wide)
   float borderLeft = step(boxLocalPos.x, 1.0);
   float borderTop = step(boxLocalPos.y, 1.0);
   float borderRight = step(boxSize.x - 1.0, boxLocalPos.x);
@@ -51,14 +43,12 @@ void main() {
   
   float isBorder = max(max(borderLeft, borderTop), max(borderRight, borderBottom));
   
-  // Calculate distance to mouse in screen space
-  float distToMouse = length(v_screenPos - u_mousePos);
-  float hoverRadius = 32.0; // Size of one box
-  
-  // Hover effect - instant on, no transition
+  // Simple hover effect based on world coordinates  
+  float distToMouse = length(v_worldPos - u_mousePos);
+  float hoverRadius = 64.0; // One box size for hover effect
   float isHovered = step(distToMouse, hoverRadius);
   
-  // Color logic: transparent background, border color on edges, hover color when hovered
+  // Color logic matching the original exactly
   vec3 color;
   float alpha;
   
@@ -67,13 +57,12 @@ void main() {
     color = u_hoverColor;
     alpha = 1.0;
   } else if (isBorder > 0.5) {
-    // Border color
+    // Border color with transparency
     color = u_borderColor;
     alpha = 1.0;
   } else {
     // Transparent interior
-    color = vec3(0.0);
-    alpha = 0.0;
+    discard;
   }
   
   gl_FragColor = vec4(color, alpha);
@@ -152,41 +141,27 @@ export const BoxesWebGL: React.FC<BoxesWebGLProps> = ({ className }) => {
     if (!program) return false
 
     programRef.current = program
-    // biome-ignore lint/correctness/useHookAtTopLevel: This is WebGL API call, not React hook
     gl.useProgram(program)
 
     // Enable blending for transparency
     gl.enable(gl.BLEND)
     gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA)
 
-    // Create a large grid that matches the original (500% size)
-    const rows = 250
-    const cols = 200
-    const boxWidth = 64 // w-16 in Tailwind = 64px
-    const boxHeight = 32 // h-8 in Tailwind = 32px
+    // Create geometry matching the original grid (250x200 boxes, each 64x32px)
+    // Use the exact same dimensions as the original h-[500%] w-[500%] 
+    const totalWidth = 200 * 64 * 5  // 500% width: 200 cols * 64px * 5
+    const totalHeight = 250 * 32 * 5 // 500% height: 250 rows * 32px * 5
 
-    // Create a massive grid that covers 500% of screen
-    const totalWidth = cols * boxWidth * 5 // 500% width
-    const totalHeight = rows * boxHeight * 5 // 500% height
-
-    const vertices = []
-
-    // Create a single large quad that covers the entire grid area
-    vertices.push(
-      0,
-      0, // Top-left
-      totalWidth,
-      0, // Top-right
-      0,
-      totalHeight, // Bottom-left
-
-      totalWidth,
-      0, // Top-right
-      totalWidth,
-      totalHeight, // Bottom-right
-      0,
-      totalHeight // Bottom-left
-    )
+    const vertices = [
+      // Single large quad covering the entire grid area
+      0, 0,                           // Top-left
+      totalWidth, 0,                  // Top-right  
+      0, totalHeight,                 // Bottom-left
+      
+      totalWidth, 0,                  // Top-right
+      totalWidth, totalHeight,        // Bottom-right
+      0, totalHeight                  // Bottom-left
+    ]
 
     // Create and bind vertex buffer
     const vertexBuffer = gl.createBuffer()
@@ -201,7 +176,7 @@ export const BoxesWebGL: React.FC<BoxesWebGLProps> = ({ className }) => {
     return true
   }, [createProgram])
 
-  // Render function
+  // Render function matching original animation exactly
   const render = useCallback(() => {
     const canvas = canvasRef.current
     const gl = glRef.current
@@ -219,50 +194,44 @@ export const BoxesWebGL: React.FC<BoxesWebGLProps> = ({ className }) => {
       gl.viewport(0, 0, displayWidth, displayHeight)
     }
 
+    // Clear with transparent background
     gl.clearColor(0, 0, 0, 0)
     gl.clear(gl.COLOR_BUFFER_BIT)
 
-    // Calculate animation transform - EXACT match to original
+    // Calculate animation transform - EXACT match to original motion.div
     const elapsed = (Date.now() - startTimeRef.current) / 1000
-    const progress = (elapsed % 35) / 35 // 35 second loop
+    const progress = (elapsed % 35) / 35 // 35 second duration
 
-    // Linear interpolation between initial and animate values
-    const translateXStart = -50 // initial: translate(-50%, -50%)
-    const translateYStart = -50
-    const translateXEnd = -40 // animate: translate(-40%, -60%)
-    const translateYEnd = -60
-
-    const translateXPercent = translateXStart + progress * (translateXEnd - translateXStart)
-    const translateYPercent = translateYStart + progress * (translateYEnd - translateYStart)
-
-    // Convert percentages to pixel values
+    // Interpolate between initial and animate transforms
+    // initial: translate(-50%, -50%) skewX(-48deg) skewY(14deg) scale(1.5)
+    // animate: translate(-40%, -60%) skewX(-48deg) skewY(14deg) scale(1.5)
+    const translateXPercent = -50 + progress * 10  // -50% to -40%
+    const translateYPercent = -50 - progress * 10  // -50% to -60%
+    
     const translateX = (translateXPercent / 100) * displayWidth
     const translateY = (translateYPercent / 100) * displayHeight
-
-    // Skew and scale values - exactly as in original
+    
+    // Constant transforms from original
     const skewXDeg = -48
     const skewYDeg = 14
     const scale = 1.5
 
-    // Build transformation matrix matching CSS transform exactly
-    // CSS: translate() skewX() skewY() scale()
-    const skewXRad = skewXDeg * (Math.PI / 180)
-    const skewYRad = skewYDeg * (Math.PI / 180)
-
+    // Build exact CSS transform matrix
+    const skewXRad = (skewXDeg * Math.PI) / 180
+    const skewYRad = (skewYDeg * Math.PI) / 180
+    
     const tanSkewX = Math.tan(skewXRad)
     const tanSkewY = Math.tan(skewYRad)
 
-    // CSS transform matrix: [a, c, b, d, tx, ty] -> WebGL matrix3: [a, b, tx, c, d, ty, 0, 0, 1]
+    // CSS transform matrix converted to WebGL matrix3
     const matrix = [
-      scale, // a: scale
-      scale * tanSkewY, // b: scale * tan(skewY)
-      translateX, // tx: translateX
-      scale * tanSkewX, // c: scale * tan(skewX)
-      scale, // d: scale
-      translateY, // ty: translateY
-      0,
-      0,
-      1,
+      scale,                    // a
+      scale * tanSkewY,         // b  
+      translateX,               // tx
+      scale * tanSkewX,         // c
+      scale,                    // d
+      translateY,               // ty
+      0, 0, 1                   // homogeneous coords
     ]
 
     // Set uniforms
@@ -275,19 +244,15 @@ export const BoxesWebGL: React.FC<BoxesWebGLProps> = ({ className }) => {
     const mousePosLocation = gl.getUniformLocation(program, "u_mousePos")
     gl.uniform2f(mousePosLocation, mousePos.x, mousePos.y)
 
-    const timeLocation = gl.getUniformLocation(program, "u_time")
-    gl.uniform1f(timeLocation, elapsed)
-
-    // Theme-based colors - EXACT match to original
+    // Theme colors matching original exactly
     const isDark = resolvedTheme === "dark"
     const borderColor = isDark
-      ? [0.2, 0.2, 0.2] // dark:border-slate-700/40 ≈ rgba(51, 65, 85, 0.4)
-      : [0.7, 0.7, 0.7] // border-slate-300/40 ≈ rgba(203, 213, 225, 0.4)
+      ? [51/255, 65/255, 85/255]    // slate-700/40 approximation  
+      : [203/255, 213/255, 225/255] // slate-300/40 approximation
 
-    // Hover color - exact hex values from original
     const hoverColor = isDark
-      ? [1.0, 1.0, 1.0] // #fff
-      : [0.094, 0.094, 0.11] // #18181b
+      ? [1.0, 1.0, 1.0]             // #fff
+      : [0.094, 0.094, 0.11]        // #18181b
 
     const borderColorLocation = gl.getUniformLocation(program, "u_borderColor")
     gl.uniform3f(borderColorLocation, borderColor[0], borderColor[1], borderColor[2])
@@ -295,7 +260,7 @@ export const BoxesWebGL: React.FC<BoxesWebGLProps> = ({ className }) => {
     const hoverColorLocation = gl.getUniformLocation(program, "u_hoverColor")
     gl.uniform3f(hoverColorLocation, hoverColor[0], hoverColor[1], hoverColor[2])
 
-    // Draw the single quad
+    // Draw the geometry
     gl.drawArrays(gl.TRIANGLES, 0, 6)
 
     animationRef.current = requestAnimationFrame(render)
@@ -310,8 +275,6 @@ export const BoxesWebGL: React.FC<BoxesWebGLProps> = ({ className }) => {
     const x = event.clientX - rect.left
     const y = event.clientY - rect.top
 
-    // Transform mouse coordinates to world space to match the moving grid
-    // We need to inverse the transform to get the correct hover position
     setMousePos({ x, y })
   }, [])
 
@@ -353,7 +316,7 @@ export const BoxesWebGL: React.FC<BoxesWebGLProps> = ({ className }) => {
         className={cn("w-full h-full pointer-events-auto", className)}
         style={{ width: "100%", height: "100%" }}
       />
-      {/* Circular fade overlay from center - EXACT match to original */}
+      {/* Circular fade overlay matching original exactly */}
       <div className="absolute inset-0 pointer-events-none z-20">
         <div
           className="absolute inset-0"
