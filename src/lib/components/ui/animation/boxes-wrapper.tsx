@@ -3,6 +3,11 @@
 import dynamic from "next/dynamic"
 import { useEffect, useState } from "react"
 
+const BoxesWebGL = dynamic(() => import("./boxes-webgl").then((mod) => ({ default: mod.BoxesWebGLMemo })), {
+  ssr: false,
+  loading: () => null,
+})
+
 const BoxesCanvas = dynamic(() => import("./boxes-canvas").then((mod) => ({ default: mod.BoxesCanvasMemo })), {
   ssr: false,
   loading: () => null,
@@ -13,31 +18,58 @@ const BoxesFallback = dynamic(() => import("./boxes").then((mod) => ({ default: 
   loading: () => null,
 })
 
-function useCanvasSupport() {
-  const [isSupported, setIsSupported] = useState<boolean | null>(null)
+type RenderMode = "webgl" | "canvas" | "dom" | null
+
+function useRenderSupport(): RenderMode {
+  const [renderMode, setRenderMode] = useState<RenderMode>(null)
 
   useEffect(() => {
-    // Check Canvas support (should be universally supported, but just in case)
+    // Check WebGL support first (best performance)
+    try {
+      const canvas = document.createElement("canvas")
+      const gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl")
+      if (gl) {
+        setRenderMode("webgl")
+        return
+      }
+    } catch {
+      // WebGL not supported, continue to Canvas check
+    }
+
+    // Check Canvas 2D support as fallback
     try {
       const canvas = document.createElement("canvas")
       const ctx = canvas.getContext("2d")
-      setIsSupported(!!ctx)
+      if (ctx) {
+        setRenderMode("canvas")
+        return
+      }
     } catch {
-      setIsSupported(false)
+      // Canvas not supported, continue to DOM fallback
     }
+
+    // Use DOM as final fallback
+    setRenderMode("dom")
   }, [])
 
-  return isSupported
+  return renderMode
 }
 
 export default function BoxesWrapper() {
-  const canvasSupported = useCanvasSupport()
+  const renderMode = useRenderSupport()
 
-  // Don't render anything until we know Canvas support status
-  if (canvasSupported === null) {
+  // Don't render anything until we know which mode to use
+  if (renderMode === null) {
     return null
   }
 
-  // Use Canvas version if supported, fallback to DOM version
-  return canvasSupported ? <BoxesCanvas /> : <BoxesFallback />
+  // Use the best available rendering mode for maximum performance
+  switch (renderMode) {
+    case "webgl":
+      return <BoxesWebGL />
+    case "canvas":
+      return <BoxesCanvas />
+    default:
+      return <BoxesFallback />
+  }
 }
