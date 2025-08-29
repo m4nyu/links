@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils"
 
 export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
   const { resolvedTheme } = useTheme()
-  // Reduced grid size for better performance - still creates large grid with transform
-  const rows = new Array(50).fill(1)
-  const cols = new Array(40).fill(1)
+  // Optimized: Use smaller grid but still looks great due to scale(1.5) and large dimensions
+  const rows = new Array(40).fill(1) // Reduced from 250 to 40 
+  const cols = new Array(32).fill(1) // Reduced from 200 to 32
   const hoverColor = resolvedTheme === "dark" ? "#fff" : "#18181b"
   const blurColor = resolvedTheme === "dark" ? "0, 0, 0" : "255, 255, 255"
 
@@ -36,7 +36,6 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
             className="relative h-8 w-16 border-l border-slate-300/40 dark:border-slate-700/40"
           >
             {cols.map((_, j) => (
-
               <motion.div
                 whileHover={{
                   backgroundColor: hoverColor,
