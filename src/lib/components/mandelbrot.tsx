@@ -3,6 +3,7 @@
 import { CrosshairIcon, MinusIcon, PlayIcon, PlusIcon, StopIcon } from "@phosphor-icons/react"
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/lib/components/ui/button"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip"
 
 interface FractalRenderer {
   resize(): void
@@ -631,6 +632,7 @@ export default function Mandelbrot() {
       render() {
         if (!this.program || !this.gl) return
 
+        // biome-ignore lint/correctness/useHookAtTopLevel: This is WebGL useProgram method, not React hook
         this.gl.useProgram(this.program)
         this.gl.clearColor(0, 0, 0, 0)
         this.gl.clear(this.gl.COLOR_BUFFER_BIT)
@@ -808,66 +810,93 @@ export default function Mandelbrot() {
           </div>
         </div>
       )}
-      {/* Controls bottom-right */}
-      <div className="fixed bottom-6 right-3 z-20 pointer-events-auto flex flex-col items-end gap-1.5">
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-6 w-6 [&_svg]:size-3"
-          onClick={() => {
-            const r = rendererRef.current
-            if (!r) return
-            r.zoomAt(r.canvas.width / 2, r.canvas.height / 2, 0.9)
-          }}
-          aria-label="Zoom in"
-          title="Zoom in"
-        >
-          <PlusIcon weight="bold" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-6 w-6 [&_svg]:size-3"
-          onClick={() => {
-            const r = rendererRef.current
-            if (!r) return
-            r.zoomAt(r.canvas.width / 2, r.canvas.height / 2, 1.1)
-          }}
-          aria-label="Zoom out"
-          title="Zoom out"
-        >
-          <MinusIcon weight="bold" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-6 w-6 [&_svg]:size-3"
-          onClick={() => {
-            if (!rendererRef.current) return
-            rendererRef.current.resetView()
-          }}
-          aria-label="Center"
-          title="Center"
-        >
-          <CrosshairIcon weight="bold" />
-        </Button>
-        <Button
-          variant="outline"
-          size="icon"
-          className="h-6 w-6 [&_svg]:size-3"
-          onClick={() => {
-            if (!rendererRef.current) return
-            rendererRef.current.togglePause()
-            setIsPausedUI(rendererRef.current.isPaused)
-          }}
-          aria-label={isPausedUI ? "Play" : "Stop"}
-          title={isPausedUI ? "Play" : "Stop"}
-        >
-          <span className={`inline-block transition-transform duration-150 ${isPausedUI ? "scale-100" : "scale-95"}`}>
-            {isPausedUI ? <PlayIcon weight="fill" /> : <StopIcon weight="fill" />}
-          </span>
-        </Button>
-      </div>
+      <TooltipProvider delayDuration={300} skipDelayDuration={100}>
+        <div className="fixed bottom-6 right-3 z-20 pointer-events-auto flex flex-col items-end gap-1.5">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-6 w-6 [&_svg]:size-3"
+                onClick={() => {
+                  const r = rendererRef.current
+                  if (!r) return
+                  r.zoomAt(r.canvas.width / 2, r.canvas.height / 2, 0.9)
+                }}
+                aria-label="Zoom in"
+              >
+                <PlusIcon weight="bold" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              <p>Zoom in</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-6 w-6 [&_svg]:size-3"
+                onClick={() => {
+                  const r = rendererRef.current
+                  if (!r) return
+                  r.zoomAt(r.canvas.width / 2, r.canvas.height / 2, 1.1)
+                }}
+                aria-label="Zoom out"
+              >
+                <MinusIcon weight="bold" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              <p>Zoom out</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-6 w-6 [&_svg]:size-3"
+                onClick={() => {
+                  if (!rendererRef.current) return
+                  rendererRef.current.resetView()
+                }}
+                aria-label="Center"
+              >
+                <CrosshairIcon weight="bold" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              <p>Reset view</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-6 w-6 [&_svg]:size-3"
+                onClick={() => {
+                  if (!rendererRef.current) return
+                  rendererRef.current.togglePause()
+                  setIsPausedUI(rendererRef.current.isPaused)
+                }}
+                aria-label={isPausedUI ? "Play" : "Pause"}
+              >
+                <span
+                  className={`inline-block transition-transform duration-150 ${isPausedUI ? "scale-100" : "scale-95"}`}
+                >
+                  {isPausedUI ? <PlayIcon weight="fill" /> : <StopIcon weight="fill" />}
+                </span>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left">
+              <p>{isPausedUI ? "Play animation" : "Pause animation"}</p>
+            </TooltipContent>
+          </Tooltip>
+        </div>
+      </TooltipProvider>
     </>
   )
 }
