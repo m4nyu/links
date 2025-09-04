@@ -1,7 +1,6 @@
 import type { Metadata } from "next"
 import type React from "react"
 import Mandelbrot from "@/lib/components/mandelbrot"
-import { PersonStructuredData, WebsiteStructuredData } from "@/lib/components/structured-data"
 import { ThemeProvider } from "@/lib/components/theme-provider"
 
 const title = "links"
@@ -102,6 +101,63 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       },
     },
   }
+}
+
+function PersonStructuredData() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: "Manuel",
+    alternateName: "Manuel Szedlak",
+    jobTitle: "Founder & Engineer",
+    description: "Founder and engineer. Links and contact information.",
+    url: "https://m4nuel.com",
+    image: "https://m4nuel.com/image.jpg",
+    sameAs: ["https://github.com/m4nyu", "https://www.linkedin.com/in/manuel-szedlak", "https://x.com/ManuelSzedlak"],
+    knowsAbout: [
+      "Software Engineering",
+      "Entrepreneurship",
+      "Full-stack Development",
+      "Web Development",
+      "Product Development",
+    ],
+    worksFor: {
+      "@type": "Organization",
+      name: "Independent",
+    },
+  }
+
+  // biome-ignore lint/security/noDangerouslySetInnerHtml: Structured data requires JSON-LD script injection for SEO
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
+}
+
+function WebsiteStructuredData() {
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Manuel - Links",
+    alternateName: "Manuel Szedlak Links",
+    url: "https://m4nuel.com",
+    description: "Founder and engineer. Links and contact information.",
+    author: {
+      "@type": "Person",
+      name: "Manuel",
+      alternateName: "Manuel Szedlak",
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Manuel",
+    },
+    inLanguage: ["en", "de", "es", "fr", "zh-CN", "ja", "pt-BR", "ru", "hi", "ar"],
+    potentialAction: {
+      "@type": "SearchAction",
+      target: "https://m4nuel.com/{search_term_string}",
+      "query-input": "required name=search_term_string",
+    },
+  }
+
+  // biome-ignore lint/security/noDangerouslySetInnerHtml: Structured data requires JSON-LD script injection for SEO
+  return <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }} />
 }
 
 export default function LangLayout({ children }: { children: React.ReactNode }) {
