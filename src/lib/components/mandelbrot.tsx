@@ -173,13 +173,12 @@ export default function Mandelbrot() {
           }
           
           vec3 getColor(float t) {
-            if (t >= 1.0) return vec3(0.0); // Black background
+            if (t >= 1.0) return vec3(0.0); // Black background - never escaped
             
-            // Rainbow colors only on the fractal border (transition zone)
-            // The border is where t is between ~0.1 and ~0.3 (just escaped points)
-            if (t > 0.05 && t < 0.35) {
-              // Create rainbow effect on the border
-              float hue = t * 6.0 + u_time * 0.1; // Slowly animate the rainbow
+            // Very thin rainbow edge - only the first few iterations that escaped
+            if (t > 0.0 && t < 0.15) {
+              // Create vibrant rainbow effect on the very edge
+              float hue = mod(t * 12.0 + u_time * 0.2, 6.0); // Faster rainbow cycling
               float r, g, b;
               
               if (hue < 1.0) {
@@ -208,25 +207,12 @@ export default function Mandelbrot() {
                 b = 6.0 - hue;
               }
               
-              // Fade the rainbow intensity based on distance from optimal border
-              float borderIntensity = 1.0 - abs(t - 0.2) * 5.0;
-              borderIntensity = clamp(borderIntensity, 0.0, 1.0);
-              
-              // Mix rainbow with white based on border proximity
-              vec3 rainbow = vec3(r, g, b) * borderIntensity;
-              float whiteMix = 1.0 - borderIntensity;
-              
-              return rainbow + vec3(whiteMix * 0.8);
+              // Full intensity rainbow on the edge
+              return vec3(r, g, b);
             }
             
-            // Interior of fractal - white/light gray
-            if (t < 0.05) {
-              return vec3(0.9);
-            }
-            
-            // Outer regions - fade to white
-            float intensity = smoothstep(0.35, 1.0, t);
-            return vec3(intensity * 0.7);
+            // Everything else outside the edge is pure white
+            return vec3(1.0);
           }
           
           void main() {
