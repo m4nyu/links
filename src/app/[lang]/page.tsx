@@ -33,26 +33,9 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/lib/componen
 import { ScrollArea } from "@/lib/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip"
 import type { Locale } from "@/lib/hooks/use-i18n-config"
-import { downloadImages, shareContent } from "@/lib/utils"
+import { downloadImages, getDictionary, shareContent } from "@/lib/utils"
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
-
-const dictionaries = {
-  en: () => import("@/lib/dictionaries/en.json").then((module) => module.default),
-  de: () => import("@/lib/dictionaries/de.json").then((module) => module.default),
-  es: () => import("@/lib/dictionaries/es.json").then((module) => module.default),
-  fr: () => import("@/lib/dictionaries/fr.json").then((module) => module.default),
-  "zh-CN": () => import("@/lib/dictionaries/zh-CN.json").then((module) => module.default),
-  ja: () => import("@/lib/dictionaries/ja.json").then((module) => module.default),
-  "pt-BR": () => import("@/lib/dictionaries/pt-BR.json").then((module) => module.default),
-  ru: () => import("@/lib/dictionaries/ru.json").then((module) => module.default),
-  hi: () => import("@/lib/dictionaries/hi.json").then((module) => module.default),
-  ar: () => import("@/lib/dictionaries/ar.json").then((module) => module.default),
-}
-
-const getDictionary = async (locale: Locale) => {
-  return dictionaries[locale as keyof typeof dictionaries]?.() ?? dictionaries.en()
-}
 
 export default function Page() {
   const params = useParams()
