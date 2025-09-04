@@ -78,7 +78,6 @@ export default function Mandelbrot() {
           "Spider Web",
           "Collatz",
           "Barnsley",
-          "Popcorn",
           "Thorn",
           "Cubic Newton",
           "Cosine",
@@ -105,7 +104,6 @@ export default function Mandelbrot() {
           "z² + c + sin(4x)cos(4y)",
           "z/2 + c or 3z+1 + c",
           "z±1 + c (conditional)",
-          "z + sin(y+tan(3y)) + c",
           "z² + c/z",
           "z - (z³-2z+2)/(3z²-2) + c",
           "cos(z) + c",
@@ -177,11 +175,58 @@ export default function Mandelbrot() {
           vec3 getColor(float t) {
             if (t >= 1.0) return vec3(0.0); // Black background
             
-            // Simple white fractal
-            float intensity = smoothstep(0.0, 1.0, t);
-            intensity = intensity * (0.9 + 0.1 * sin(t * 20.0));
+            // Rainbow colors only on the fractal border (transition zone)
+            // The border is where t is between ~0.1 and ~0.3 (just escaped points)
+            if (t > 0.05 && t < 0.35) {
+              // Create rainbow effect on the border
+              float hue = t * 6.0 + u_time * 0.1; // Slowly animate the rainbow
+              float r, g, b;
+              
+              if (hue < 1.0) {
+                r = 1.0;
+                g = hue;
+                b = 0.0;
+              } else if (hue < 2.0) {
+                r = 2.0 - hue;
+                g = 1.0;
+                b = 0.0;
+              } else if (hue < 3.0) {
+                r = 0.0;
+                g = 1.0;
+                b = hue - 2.0;
+              } else if (hue < 4.0) {
+                r = 0.0;
+                g = 4.0 - hue;
+                b = 1.0;
+              } else if (hue < 5.0) {
+                r = hue - 4.0;
+                g = 0.0;
+                b = 1.0;
+              } else {
+                r = 1.0;
+                g = 0.0;
+                b = 6.0 - hue;
+              }
+              
+              // Fade the rainbow intensity based on distance from optimal border
+              float borderIntensity = 1.0 - abs(t - 0.2) * 5.0;
+              borderIntensity = clamp(borderIntensity, 0.0, 1.0);
+              
+              // Mix rainbow with white based on border proximity
+              vec3 rainbow = vec3(r, g, b) * borderIntensity;
+              float whiteMix = 1.0 - borderIntensity;
+              
+              return rainbow + vec3(whiteMix * 0.8);
+            }
             
-            return vec3(intensity);
+            // Interior of fractal - white/light gray
+            if (t < 0.05) {
+              return vec3(0.9);
+            }
+            
+            // Outer regions - fade to white
+            float intensity = smoothstep(0.35, 1.0, t);
+            return vec3(intensity * 0.7);
           }
           
           void main() {
@@ -271,20 +316,17 @@ export default function Mandelbrot() {
                   zNew = vec2(z.x + 1.0, z.y - 1.0) + c;
                 }
               } else if (m == 15) {
-                // Popcorn
-                zNew = z + vec2(sin(z.y + tan(3.0 * z.y)), sin(z.x + tan(3.0 * z.x))) * 0.5 + c;
-              } else if (m == 16) {
                 // Thorn
                 zNew = cdiv(z2 + c, z + vec2(0.001, 0.0));
-              } else if (m == 17) {
+              } else if (m == 16) {
                 // Cubic Newton
                 vec2 f = z3 - 2.0 * z + vec2(2.0, 0.0);
                 vec2 df = 3.0 * z2 - vec2(2.0, 0.0);
                 zNew = z - cdiv(f, df) + c * 0.1;
-              } else if (m == 18) {
+              } else if (m == 17) {
                 // Cosine
                 zNew = ccos(z) + c;
-              } else if (m == 19) {
+              } else if (m == 18) {
                 // Tangent
                 vec2 sinz = csin(z);
                 vec2 cosz = ccos(z);
@@ -293,16 +335,16 @@ export default function Mandelbrot() {
                 } else {
                   zNew = z2 + c;
                 }
-              } else if (m == 20) {
+              } else if (m == 19) {
                 // Henon
                 float a = 1.4 + 0.2 * sin(phase);
                 float b = 0.3;
                 zNew = vec2(1.0 - a * z.x * z.x + z.y, b * z.x) + c * 0.1;
-              } else if (m == 21) {
+              } else if (m == 20) {
                 // Ikeda
                 float t = 0.4 - 6.0 / (1.0 + dot(z, z));
                 zNew = vec2(1.0, 0.0) + 0.9 * cmul(z, cexp(vec2(0.0, t))) + c * 0.1;
-              } else if (m == 22) {
+              } else if (m == 21) {
                 // Tinkerbell
                 float a = 0.9, b = -0.6013, cc = 2.0, d = 0.5;
                 zNew = vec2(z.x * z.x - z.y * z.y + a * z.x + b * z.y, 
