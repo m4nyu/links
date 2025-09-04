@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx"
 import { twMerge } from "tailwind-merge"
+import type { Locale } from "@/lib/hooks/use-i18n-config"
 
 interface ZipFile {
   file: (name: string, content: Blob) => void
@@ -8,6 +9,13 @@ interface ZipFile {
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
+}
+
+export const getDictionary = async (locale: Locale) => {
+  const dictionaries = ["en", "de", "es", "fr", "zh-CN", "ja", "pt-BR", "ru", "hi", "ar"] as const
+
+  const validLocale = dictionaries.includes(locale as (typeof dictionaries)[number]) ? locale : "en"
+  return import(`@/lib/dictionaries/${validLocale}.json`).then((module) => module.default)
 }
 
 export const processZip = async (
