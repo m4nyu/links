@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import type React from "react"
+import Mandelbrot from "@/lib/components/mandelbrot"
 import { PersonStructuredData, WebsiteStructuredData } from "@/lib/components/structured-data"
 import { ThemeProvider } from "@/lib/components/theme-provider"
-import BoxesWrapper from "@/lib/components/ui/animation/boxes-wrapper"
 
 const title = "links"
 const description = "Founder and engineer. Portfolio and contact information."
@@ -111,7 +111,7 @@ export default function LangLayout({ children }: { children: React.ReactNode }) 
       <WebsiteStructuredData />
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div className="relative min-h-screen w-full overflow-hidden bg-background">
-          <BoxesWrapper />
+          <Mandelbrot />
           <div className="relative z-10 flex h-full min-h-screen items-center justify-center p-4 pointer-events-none">
             <div className="pointer-events-auto">{children}</div>
           </div>
