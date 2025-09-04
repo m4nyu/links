@@ -1,12 +1,20 @@
 import { type ClassValue, clsx } from "clsx"
-import type JSZip from "jszip"
 import { twMerge } from "tailwind-merge"
+
+interface ZipFile {
+  file: (name: string, content: Blob) => void
+  generateAsync: (options: { type: string }) => Promise<Blob>
+}
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export const processZip = async (canvas: HTMLCanvasElement, zip: JSZip, grayscale: boolean = false): Promise<void> => {
+export const processZip = async (
+  canvas: HTMLCanvasElement,
+  zip: ZipFile,
+  grayscale: boolean = false
+): Promise<void> => {
   return new Promise<void>((resolve) => {
     const ctx = canvas.getContext("2d")
     if (!ctx) {
@@ -80,7 +88,7 @@ export const downloadImages = async (imageSrc: string = "/image.jpg"): Promise<v
       canvas.height = img.height
       ctx.drawImage(img, 0, 0)
 
-      await processZip(canvas, zip, grayscale)
+      await processZip(canvas, zip as ZipFile, grayscale)
     }
 
     return new Promise<void>((resolve, reject) => {
@@ -197,3 +205,6 @@ export const generateWebsitedata = async (data: {
 
   return JSON.stringify(structuredData)
 }
+
+// Export type information to help TypeScript language server
+export type { ClassValue } from "clsx"
