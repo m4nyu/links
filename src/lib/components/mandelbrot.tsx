@@ -211,8 +211,8 @@ export default function Mandelbrot() {
               return vec3(r, g, b);
             }
             
-            // Everything else outside the edge is pure white
-            return vec3(1.0);
+            // Everything else outside the edge is also black background
+            return vec3(0.0);
           }
           
           void main() {
