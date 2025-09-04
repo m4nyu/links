@@ -54,7 +54,7 @@ const getDictionary = async (locale: Locale) => {
   return dictionaries[locale as keyof typeof dictionaries]?.() ?? dictionaries.en()
 }
 
-export default function PortfolioPage() {
+export default function Page() {
   const params = useParams()
   const lang = params?.lang as Locale
   const [dictionary, setDictionary] = useState<{ portfolio: { [key: string]: string } } | null>(null)
