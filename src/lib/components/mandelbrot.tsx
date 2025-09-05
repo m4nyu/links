@@ -4,8 +4,6 @@ import { CrosshairIcon, MinusIcon, PlayIcon, PlusIcon, StopIcon } from "@phospho
 import { useEffect, useRef, useState } from "react"
 import { Button } from "@/lib/components/ui/button"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip"
-import { SimpleWorkerPool } from "./simple-worker-pool"
-import { TestWorkerPool } from "./test-worker-pool"
 
 interface FractalRenderer {
   resize(): void
@@ -16,7 +14,6 @@ interface FractalRenderer {
   resetView(): void
   togglePause(): void
   canvas: HTMLCanvasElement
-  setRenderMode(mode: 'webgl' | 'worker'): void
 }
 
 export default function Mandelbrot() {
@@ -26,9 +23,7 @@ export default function Mandelbrot() {
   const [currentFractal, setCurrentFractal] = useState({ name: "", formula: "" })
   const [isPausedUI, setIsPausedUI] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
-  const [renderMode, setRenderMode] = useState<'webgl' | 'worker'>('webgl')
   const [fps, setFps] = useState(60)
-  const [workerStats, setWorkerStats] = useState({ totalWorkers: 0, busyWorkers: 0, queuedJobs: 0 })
   const dragStartRef = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
@@ -63,17 +58,6 @@ export default function Mandelbrot() {
       renderScale: number
       center: { x: number; y: number }
       baseZoom: number
-      
-      // New real-time rendering properties
-      workerPool: SimpleWorkerPool | null
-      ctx2d: CanvasRenderingContext2D | null
-      renderMode: 'webgl' | 'worker'
-      tileSize: number
-      activeRenderJobs: Set<number>
-      imageDataCache: Map<string, ImageData>
-      renderFrameId: number
-      pendingTiles: Array<{ x: number; y: number; width: number; height: number }>
-      isRendering: boolean
 
       constructor(canvas: HTMLCanvasElement, onModeChange: (name: string, formula: string) => void) {
         this.canvas = canvas
@@ -101,17 +85,6 @@ export default function Mandelbrot() {
         this.renderScale = 1.0
         this.center = { x: -0.5, y: 0.0 }
         this.baseZoom = 2.0
-        
-        // Initialize real-time rendering
-        this.workerPool = null
-        this.ctx2d = null
-        this.renderMode = 'webgl' // Start with WebGL for best performance
-        this.tileSize = 64 // Optimal tile size for parallel processing
-        this.activeRenderJobs = new Set()
-        this.imageDataCache = new Map()
-        this.renderFrameId = 0
-        this.pendingTiles = []
-        this.isRendering = false
 
         this.modes = [
           { name: "Mandelbrot", formula: "z² + c" },
@@ -130,203 +103,6 @@ export default function Mandelbrot() {
         ]
 
         this.init()
-      }
-      
-      async setRenderMode(mode: 'webgl' | 'worker') {
-        if (this.renderMode === mode) return
-        
-        this.renderMode = mode
-        
-        if (mode === 'worker' && !this.workerPool) {
-          await this.initializeWorkerPool()
-        }
-        
-        // Force re-render with new mode
-        this.invalidateRender()
-      }
-      
-      private async initializeWorkerPool() {
-        if (this.workerPool) return
-        
-        try {
-          console.log('Testing basic worker functionality first...')
-          
-          // Test with simple worker first
-          const testPool = new TestWorkerPool()
-          
-          try {
-            const testResult = await testPool.testJob()
-            console.log('Test worker result:', testResult)
-            testPool.destroy()
-            
-            // If test passed, create the real worker pool
-            console.log('Test passed, creating real worker pool...')
-            this.workerPool = new SimpleWorkerPool()
-            
-          } catch (testError) {
-            console.error('Test worker failed:', testError)
-            testPool.destroy()
-            throw testError
-          }
-          
-          this.ctx2d = this.canvas.getContext('2d', { alpha: true })
-          
-          // Prepare canvas for 2D rendering
-          if (this.ctx2d) {
-            this.ctx2d.imageSmoothingEnabled = false
-          }
-          
-          console.log('Worker pool initialized successfully')
-        } catch (error) {
-          console.error('Failed to initialize worker pool:', error)
-          // Fall back to WebGL mode
-          this.setRenderMode('webgl')
-        }
-      }
-      
-      private invalidateRender() {
-        this.imageDataCache.clear()
-        this.activeRenderJobs.clear()
-        this.isRendering = false
-        
-        if (this.renderMode === 'worker') {
-          this.renderWithWorkers()
-        }
-      }
-      
-      private getCacheKey(x: number, y: number, width: number, height: number): string {
-        return `${x},${y},${width},${height},${this.zoom.toFixed(6)},${this.center.x.toFixed(6)},${this.center.y.toFixed(6)},${this.iterations},${this.currentMode}`
-      }
-      
-      private async renderWithWorkers() {
-        if (!this.workerPool || !this.ctx2d || this.isRendering) {
-          console.log('Render blocked:', { workerPool: !!this.workerPool, ctx2d: !!this.ctx2d, isRendering: this.isRendering })
-          return
-        }
-        
-        this.isRendering = true
-        const startTime = performance.now()
-        
-        try {
-          // Clear canvas
-          this.ctx2d.fillStyle = 'black'
-          this.ctx2d.fillRect(0, 0, this.canvas.width, this.canvas.height)
-          
-          // Generate a smaller set of tiles first to test
-          const tiles = this.generateTiles()
-          console.log(`Generated ${tiles.length} tiles`)
-          
-          // Limit concurrent jobs to avoid overwhelming workers
-          const maxConcurrent = Math.min(8, tiles.length)
-          const tilesToProcess = tiles.slice(0, maxConcurrent)
-          
-          let completedTiles = 0
-          
-          for (const tile of tilesToProcess) {
-            try {
-              console.log(`Submitting job for tile ${tile.x},${tile.y}`)
-              
-              const result = await this.workerPool.submitJob({
-                startX: tile.x,
-                startY: tile.y,
-                width: tile.width,
-                height: tile.height,
-                centerX: this.center.x,
-                centerY: this.center.y,
-                zoom: this.zoom,
-                maxIterations: this.iterations,
-                canvasWidth: this.canvas.width,
-                canvasHeight: this.canvas.height,
-                mode: this.currentMode
-              })
-              
-              console.log(`Received result for tile ${result.startX},${result.startY}`)
-              
-              if (this.ctx2d) {
-                const imageData = new ImageData(result.imageData, result.width, result.height)
-                this.ctx2d.putImageData(imageData, result.startX, result.startY)
-              }
-              
-              completedTiles++
-              
-            } catch (error) {
-              console.error('Worker job failed:', error)
-            }
-          }
-          
-          // Update FPS
-          const renderTime = performance.now() - startTime
-          this.fps = Math.round(1000 / renderTime)
-          
-          console.log(`Completed ${completedTiles}/${tilesToProcess.length} tiles in ${renderTime.toFixed(2)}ms`)
-          
-        } catch (error) {
-          console.error('Worker render failed:', error)
-        } finally {
-          this.isRendering = false
-        }
-      }
-      
-      private sortTilesByPriority(tiles: Array<{ x: number; y: number; width: number; height: number }>) {
-        const centerX = this.canvas.width / 2
-        const centerY = this.canvas.height / 2
-        
-        tiles.sort((a, b) => {
-          const distA = Math.sqrt(
-            Math.pow(a.x + a.width / 2 - centerX, 2) + 
-            Math.pow(a.y + a.height / 2 - centerY, 2)
-          )
-          const distB = Math.sqrt(
-            Math.pow(b.x + b.width / 2 - centerX, 2) + 
-            Math.pow(b.y + b.height / 2 - centerY, 2)
-          )
-          return distA - distB
-        })
-      }
-      
-      private manageCacheSize() {
-        const maxCacheSize = 150
-        const targetSize = 100
-        
-        if (this.imageDataCache.size > maxCacheSize) {
-          const keys = Array.from(this.imageDataCache.keys())
-          // Remove oldest entries
-          const keysToRemove = keys.slice(0, this.imageDataCache.size - targetSize)
-          for (const key of keysToRemove) {
-            this.imageDataCache.delete(key)
-          }
-        }
-      }
-      
-      private generateTiles(): Array<{ x: number; y: number; width: number; height: number }> {
-        const tiles: Array<{ x: number; y: number; width: number; height: number }> = []
-        const { width: canvasWidth, height: canvasHeight } = this.canvas
-        
-        if (canvasWidth <= 0 || canvasHeight <= 0) return tiles
-        
-        // Start with larger tiles for debugging
-        let tileSize = 128
-        
-        // Use smaller tiles at higher zoom levels
-        if (this.zoom < 0.1) {
-          tileSize = 64
-        } else if (this.zoom < 1) {
-          tileSize = 96
-        }
-        
-        for (let y = 0; y < canvasHeight; y += tileSize) {
-          for (let x = 0; x < canvasWidth; x += tileSize) {
-            const width = Math.min(tileSize, canvasWidth - x)
-            const height = Math.min(tileSize, canvasHeight - y)
-            
-            if (width > 0 && height > 0) {
-              tiles.push({ x, y, width, height })
-            }
-          }
-        }
-        
-        console.log(`Generated ${tiles.length} tiles for ${canvasWidth}x${canvasHeight} canvas`)
-        return tiles
       }
 
       getVertexShader() {
@@ -749,18 +525,18 @@ export default function Mandelbrot() {
       resize() {
         // Dynamic DPR scaling based on performance
         let dpr = window.devicePixelRatio || 1
-        if (this.fps < 30 && this.renderMode === 'webgl') {
+        if (this.fps < 30) {
           dpr = Math.max(1, dpr * 0.75) // Reduce resolution for better performance
         } else if (this.fps > 90) {
           dpr = Math.min(2, dpr * 1.25) // Increase resolution when performance allows
         }
         dpr = Math.max(1, Math.min(2, Math.floor(dpr)))
-        
+
         this.canvas.width = Math.floor(window.innerWidth * dpr * this.renderScale)
         this.canvas.height = Math.floor(window.innerHeight * dpr * this.renderScale)
         this.canvas.style.width = `${window.innerWidth}px`
         this.canvas.style.height = `${window.innerHeight}px`
-        
+
         if (this.gl) {
           this.gl.viewport(0, 0, this.canvas.width, this.canvas.height)
         }
@@ -779,11 +555,6 @@ export default function Mandelbrot() {
         const minDimension = Math.min(this.canvas.width, this.canvas.height)
         if (minDimension < 600) {
           this.zoom *= 0.8
-        }
-        
-        // Invalidate cache on resize for worker mode
-        if (this.renderMode === 'worker') {
-          this.invalidateRender()
         }
       }
 
@@ -907,16 +678,8 @@ export default function Mandelbrot() {
           this.onModeChange(this.modes[this.currentMode].name, this.modes[this.currentMode].formula)
         }
 
-        // Render based on current mode
-        if (this.renderMode === 'webgl') {
-          this.render()
-        } else {
-          // For worker mode, only re-render if there are changes
-          if (!this.isRendering) {
-            this.renderWithWorkers()
-          }
-        }
-        
+        this.render()
+
         this.animationId = requestAnimationFrame(() => this.animate())
       }
 
@@ -927,11 +690,6 @@ export default function Mandelbrot() {
         if (this.gl && this.program) {
           this.gl.deleteProgram(this.program)
         }
-        if (this.workerPool) {
-          this.workerPool.destroy()
-        }
-        this.imageDataCache.clear()
-        this.activeRenderJobs.clear()
       }
 
       zoomAt(screenX: number, screenY: number, factor: number) {
@@ -945,40 +703,18 @@ export default function Mandelbrot() {
         this.zoom *= factor
         this.center.x = worldX - uv.x * this.zoom
         this.center.y = worldY - uv.y * this.zoom
-        
-        // Invalidate cache and re-render for worker mode
-        if (this.renderMode === 'worker') {
-          this.invalidateRender()
-        }
-        
-        // Auto-switch to worker mode for extreme zooms where WebGL precision fails
-        if (this.zoom < 1e-10 && this.renderMode === 'webgl') {
-          this.setRenderMode('worker')
-        }
       }
 
       panBy(deltaScreenX: number, deltaScreenY: number) {
         const minDim = Math.min(this.canvas.width, this.canvas.height)
         this.center.x -= (deltaScreenX / minDim) * this.zoom
         this.center.y += (deltaScreenY / minDim) * this.zoom
-        
-        // Invalidate cache and re-render for worker mode
-        if (this.renderMode === 'worker') {
-          this.invalidateRender()
-        }
       }
 
       resetView() {
         this.center.x = -0.5
         this.center.y = 0.0
         this.zoom = this.baseZoom
-        
-        // Switch back to WebGL for normal zoom levels
-        if (this.renderMode === 'worker') {
-          this.setRenderMode('webgl')
-        }
-        
-        this.invalidateRender()
       }
 
       togglePause() {
@@ -996,17 +732,14 @@ export default function Mandelbrot() {
       formula: renderer.modes[0].formula,
     })
     setIsPausedUI(renderer.isPaused)
-    
+
     // Performance monitoring
     const updateStats = () => {
       if (renderer) {
         setFps(Math.round(renderer.fps))
-        if (renderer.workerPool) {
-          setWorkerStats(renderer.workerPool.getStats())
-        }
       }
     }
-    
+
     const statsInterval = setInterval(updateStats, 250)
 
     const handleResize = () => {
@@ -1105,12 +838,7 @@ export default function Mandelbrot() {
                        dark:contrast-more:text-foreground/80
                        motion-reduce:transition-none"
           >
-            {renderMode.toUpperCase()} | {fps} FPS
-            {renderMode === 'worker' && (
-              <span className="ml-2">
-                W: {workerStats.totalWorkers} | B: {workerStats.busyWorkers} | Q: {workerStats.queuedJobs}
-              </span>
-            )}
+            WEBGL | {fps} FPS
           </div>
         </div>
       )}
@@ -1197,28 +925,6 @@ export default function Mandelbrot() {
             </TooltipTrigger>
             <TooltipContent side="left">
               <p>{isPausedUI ? "Play animation" : "Pause animation"}</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button
-                variant="outline"
-                size="icon"
-                className="h-6 w-6 text-[9px] font-mono"
-                onClick={async () => {
-                  if (!rendererRef.current) return
-                  const newMode = renderMode === 'webgl' ? 'worker' : 'webgl'
-                  console.log(`Switching to ${newMode} mode`)
-                  await rendererRef.current.setRenderMode(newMode)
-                  setRenderMode(newMode)
-                }}
-                aria-label={`Switch to ${renderMode === 'webgl' ? 'CPU' : 'GPU'} rendering`}
-              >
-                {renderMode === 'webgl' ? 'GPU' : 'CPU'}
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent side="left">
-              <p>Switch to {renderMode === 'webgl' ? 'CPU (Multi-threaded)' : 'GPU (WebGL)'} rendering</p>
             </TooltipContent>
           </Tooltip>
         </div>
