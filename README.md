@@ -1,112 +1,92 @@
 <div align="center">
-  <h1>Portfolio</h1>
-  <img src="public/image.jpg" alt="Portfolio" width="200" />
-  <h3>Dependencies</h3>
-  <p>
-    <img src="https://img.shields.io/badge/next-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="next" />
-    <img src="https://img.shields.io/badge/react-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="react" />
-    <img src="https://img.shields.io/badge/typescript-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="typescript" />
-    <img src="https://img.shields.io/badge/tailwindcss-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="tailwindcss" />
-    <img src="https://img.shields.io/badge/@radix--ui-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="@radix-ui" />
-    <img src="https://img.shields.io/badge/@mdx--js-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="@mdx-js" />
-    <img src="https://img.shields.io/badge/framer--motion-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="framer-motion" />
-    <img src="https://img.shields.io/badge/next--themes-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="next-themes" />
-    <img src="https://img.shields.io/badge/cal.com-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="cal.com" />
-    <img src="https://img.shields.io/badge/jotai-white?style=flat-square&labelColor=fff&color=fff&logoColor=000" alt="jotai" />
-  </p>
+
+<pre style="background: transparent;">
+██╗     ██╗███╗   ██╗██╗  ██╗███████╗
+██║     ██║████╗  ██║██║ ██╔╝██╔════╝
+██║     ██║██╔██╗ ██║█████╔╝ ███████╗
+██║     ██║██║╚██╗██║██╔═██╗ ╚════██║
+███████╗██║██║ ╚████║██║  ██╗███████║
+╚══════╝╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝╚══════╝
+</pre>
+[![GitHub](https://img.shields.io/badge/GitHub-m4nyu-181717?style=flat&logo=github)](https://github.com/m4nyu)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Manuel%20Szedlak-0A66C2?style=flat&logo=linkedin)](https://www.linkedin.com/in/manuel-szedlak)
+[![X](https://img.shields.io/badge/X-ManuelSzedlak-1DA1F2?style=flat&logo=x)](https://x.com/ManuelSzedlak)
+
+![Next.js](https://img.shields.io/badge/Next.js-15.5.0-000000?style=flat&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+![React](https://img.shields.io/badge/React-18-61DAFB?style=flat&logo=react&logoColor=white)
+![License](https://img.shields.io/badge/License-MIT-green?style=flat)
+
 </div>
 
-<div id="setup" style="position: sticky; top: 0; display: flex; align-items: center; padding: 14px 16px; backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.75); margin: 30px 0 20px 0; color: #ffffff; font-weight: 500; font-size: 16px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); z-index: 50;"><span style="margin-right: 10px;"></span><span>Setup</span></div>
-
-<div class="subnavigation" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; padding-left: 10px;">
-  <a href="#environment" style="display: inline-block; padding: 5px 0; text-decoration: none; color: #333; font-size: 13px; transition: all 0.2s ease; border-bottom: 1px solid transparent; margin-right: 16px;">Environment</a>
-  <a href="#dependencies" style="display: inline-block; padding: 5px 0; text-decoration: none; color: #333; font-size: 13px; transition: all 0.2s ease; border-bottom: 1px solid transparent; margin-right: 16px;">Dependencies</a>
-</div>
-
-### <a id="environment"></a>Environment
+## ▲ Installation
 
 ```bash
-node --version  # Should be 18.x or higher
-npm --version
-git clone <repository>
-cd manuel-site
-npm install
+# Install Node.js (18.x or higher)
+node --version  # Verify installation
+npm install     # Install dependencies
 ```
 
-### <a id="dependencies"></a>Dependencies
+## ▶ Run
 
-| Action | Command |
-|--------|---------|
-| Install | `npm install` |
-| Add package | `npm install package-name` |
-| Add dev package | `npm install -D package-name` |
-| Update packages | `npm update` |
-| Clean install | `rm -rf node_modules package-lock.json && npm install` |
+```bash
+npm run dev     # Development server at http://localhost:3000
+npm run build   # Production build
+npm run start   # Production server
+```
 
-<div id="development" style="position: sticky; top: 0; display: flex; align-items: center; padding: 14px 16px; backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.75); margin: 30px 0 20px 0; color: #ffffff; font-weight: 500; font-size: 16px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); z-index: 50;"><span style="margin-right: 10px;"></span><span>Development</span></div>
+## ▲ Deploy
 
-<div class="subnavigation" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; padding-left: 10px;">
-  <a href="#servers" style="display: inline-block; padding: 5px 0; text-decoration: none; color: #333; font-size: 13px; transition: all 0.2s ease; border-bottom: 1px solid transparent; margin-right: 16px;">Servers</a>
-  <a href="#code-quality" style="display: inline-block; padding: 5px 0; text-decoration: none; color: #333; font-size: 13px; transition: all 0.2s ease; border-bottom: 1px solid transparent; margin-right: 16px;">Code Quality</a>
-</div>
+### Deploy to Vercel
 
-### <a id="servers"></a>Servers
+1. **Connect Repository**
+   - Import your GitHub repository to Vercel
+   - Select the `main` branch
 
-| Server | Command |
-|--------|---------|
-| Development | `npm run dev` |
-| Production Build | `npm run build` |
-| Production Server | `npm run start` |
+2. **Configure Build Settings**
+   - **Framework Preset**: Next.js (auto-detected)
+   - **Build Command**: `npm run build`
+   - **Output Directory**: `.next`
 
-### <a id="code-quality"></a>Code Quality
+3. **Set Environment Variables** (if needed)
+   ```
+   NEXT_PUBLIC_API_URL=your-api-url
+   ```
 
-| Tool | Command |
-|------|---------|
-| Linting | `npm run lint` |
-| Type Checking | `npm run type-check` |
+4. **Deploy**
+   - Click "Deploy" and wait for the build
+   - Your site will be available at `https://[app-name].vercel.app`
 
-<div id="features" style="position: sticky; top: 0; display: flex; align-items: center; padding: 14px 16px; backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.75); margin: 30px 0 20px 0; color: #ffffff; font-weight: 500; font-size: 16px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); z-index: 50;"><span style="margin-right: 10px;"></span><span>Features</span></div>
+## ■ Adding Content
 
-<div class="subnavigation" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; padding-left: 10px;">
-  <a href="#internationalization" style="display: inline-block; padding: 5px 0; text-decoration: none; color: #333; font-size: 13px; transition: all 0.2s ease; border-bottom: 1px solid transparent; margin-right: 16px;">Internationalization</a>
-  <a href="#ui-components" style="display: inline-block; padding: 5px 0; text-decoration: none; color: #333; font-size: 13px; transition: all 0.2s ease; border-bottom: 1px solid transparent; margin-right: 16px;">UI Components</a>
-  <a href="#content-management" style="display: inline-block; padding: 5px 0; text-decoration: none; color: #333; font-size: 13px; transition: all 0.2s ease; border-bottom: 1px solid transparent; margin-right: 16px;">Content</a>
-</div>
+Create new pages and components in the `src/` directory:
 
-### <a id="internationalization"></a>Internationalization
+```tsx
+// src/app/[lang]/page.tsx
+export default function Page() {
+  return <div>Your content here</div>
+}
+```
 
-- **10 Languages Supported**: English, German, Spanish, French, Portuguese (BR), Russian, Chinese, Japanese, Hindi, Arabic
-- **Dynamic Language Switching**: Automatic locale detection and routing
-- **Localized Content**: Full translation support for all site content
+### MDX Support
+```mdx
+---
+title: "Page Title"
+description: "Page description"
+---
 
-### <a id="ui-components"></a>UI Components
+# Content with React components
 
-- **Modern Design System**: Built with Tailwind CSS v4
-- **Radix UI Components**: Accessible, unstyled UI primitives
-- **Theme Support**: Dark/light mode with next-themes
-- **Animations**: Framer Motion for smooth interactions
-- **Responsive Design**: Mobile-first approach
+<Button>Interactive button</Button>
+```
 
-### <a id="content-management"></a>Content Management
+### Internationalization
+- 10 languages supported out of the box
+- Add translations in `src/content/`
+- Automatic locale detection and routing
 
-- **MDX Support**: Rich content with React components
-- **Legal Pages**: Imprint and privacy policy templates
-- **Dynamic Routing**: Internationalized page routing
-- **Meeting Integration**: Cal.com embed for scheduling
-
-<div id="architecture" style="position: sticky; top: 0; display: flex; align-items: center; padding: 14px 16px; backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.75); margin: 30px 0 20px 0; color: #ffffff; font-weight: 500; font-size: 16px; box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05); z-index: 50;"><span style="margin-right: 10px;"></span><span>Architecture</span></div>
-
-### Tech Stack
-
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4
-- **State Management**: Jotai for atomic state
-- **Content**: MDX with @mdx-js/react
-- **Icons**: Phosphor Icons and Lucide React
-- **Deployment**: Optimized for modern hosting platforms
-
-### Project Structure
+## ◆ Structure
 
 ```
 src/
@@ -114,7 +94,9 @@ src/
 │   ├── [lang]/         # Internationalized routes
 │   └── api/            # API endpoints
 ├── components/         # Reusable UI components
-├── content/           # MDX content files
+├── content/           # MDX content & translations
 ├── lib/               # Utilities and configurations
-└── styles/            # Global styles
+└── styles/            # Global styles & Tailwind
+
+public/                # Static assets & images
 ```
