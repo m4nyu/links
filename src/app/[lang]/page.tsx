@@ -1,8 +1,6 @@
 "use client"
 
 import {
-  ArticleIcon,
-  CalendarCheckIcon,
   CheckIcon,
   DownloadSimpleIcon,
   GithubLogoIcon,
@@ -131,7 +129,12 @@ export default function Page() {
         <div className="flex w-full max-w-[280px] sm:max-w-[360px] flex-col space-y-1.5">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button asChild variant="outline" size="lg" className="w-full h-12 sm:h-14 text-sm sm:text-base uppercase font-semibold tracking-wider justify-start border-black dark:border-white select-none">
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full h-12 sm:h-14 text-sm sm:text-base uppercase font-semibold tracking-wider justify-start border-black dark:border-white select-none"
+              >
                 <Link href="https://m4nuel.blog" target="_blank">
                   {dictionary.portfolio.visitBlog || "My Blog"}
                 </Link>
@@ -171,7 +174,12 @@ export default function Page() {
         <div className="flex w-full justify-center space-x-2 sm:space-x-3 select-none">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" asChild className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white">
+              <Button
+                variant="outline"
+                size="icon"
+                asChild
+                className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white"
+              >
                 <Link href="https://github.com/m4nyu" target="_blank" aria-label="GitHub">
                   <GithubLogoIcon className="size-5 sm:size-6" />
                 </Link>
@@ -183,7 +191,12 @@ export default function Page() {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" asChild className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white">
+              <Button
+                variant="outline"
+                size="icon"
+                asChild
+                className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white"
+              >
                 <Link href="https://www.linkedin.com/in/manuel-szedlak" target="_blank" aria-label="LinkedIn">
                   <LinkedinLogoIcon className="size-5 sm:size-6" />
                 </Link>
@@ -195,7 +208,12 @@ export default function Page() {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" asChild className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white">
+              <Button
+                variant="outline"
+                size="icon"
+                asChild
+                className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white"
+              >
                 <Link href="https://x.com/ManuelSzedlak" target="_blank" aria-label="X (formerly Twitter)">
                   <XLogoIcon className="size-5 sm:size-6" />
                 </Link>
@@ -222,7 +240,11 @@ export default function Page() {
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    {isShared ? <CheckIcon className="size-5 sm:size-6" /> : <ShareNetworkIcon className="size-5 sm:size-6" />}
+                    {isShared ? (
+                      <CheckIcon className="size-5 sm:size-6" />
+                    ) : (
+                      <ShareNetworkIcon className="size-5 sm:size-6" />
+                    )}
                   </motion.div>
                 </AnimatePresence>
               </Button>
