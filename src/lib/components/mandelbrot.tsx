@@ -521,15 +521,26 @@ export default function Mandelbrot() {
         this.gl.vertexAttribPointer(positionLoc, 2, this.gl.FLOAT, false, 0, 0)
       }
 
-      resize() {
-        // Dynamic DPR scaling based on performance
+      private calculateDPR(): number {
         let dpr = window.devicePixelRatio || 1
         if (this.fps < 30) {
-          dpr = Math.max(1, dpr * 0.75) // Reduce resolution for better performance
+          dpr = Math.max(1, dpr * 0.75)
         } else if (this.fps > 90) {
-          dpr = Math.min(2, dpr * 1.25) // Increase resolution when performance allows
+          dpr = Math.min(2, dpr * 1.25)
         }
-        dpr = Math.max(1, Math.min(2, Math.floor(dpr)))
+        return Math.max(1, Math.min(2, Math.floor(dpr)))
+      }
+
+      private calculateZoom(aspectRatio: number): number {
+        const baseZoom = 2.0
+        if (aspectRatio > 1.0) {
+          return baseZoom * (1.0 + (aspectRatio - 1.0) * 0.3)
+        }
+        return baseZoom * (1.0 + (1.0 / aspectRatio - 1.0) * 0.2)
+      }
+
+      resize() {
+        const dpr = this.calculateDPR()
 
         this.canvas.width = Math.floor(window.innerWidth * dpr * this.renderScale)
         this.canvas.height = Math.floor(window.innerHeight * dpr * this.renderScale)
@@ -541,14 +552,9 @@ export default function Mandelbrot() {
         }
 
         const aspectRatio = this.canvas.width / this.canvas.height
-        const baseZoom = 2.0
-
-        if (aspectRatio > 1.0) {
-          this.zoom = baseZoom * (1.0 + (aspectRatio - 1.0) * 0.3)
-        } else {
-          this.zoom = baseZoom * (1.0 + (1.0 / aspectRatio - 1.0) * 0.2)
-        }
+        this.zoom = this.calculateZoom(aspectRatio)
         this.baseZoom = this.zoom
+
         if (!this.center) this.center = { x: -0.5, y: 0.0 }
 
         const minDimension = Math.min(this.canvas.width, this.canvas.height)
@@ -891,9 +897,7 @@ export default function Mandelbrot() {
           }}
           aria-label={isPausedUI ? "Play" : "Pause"}
         >
-          <span
-            className={`inline-block transition-transform duration-150 ${isPausedUI ? "scale-100" : "scale-95"}`}
-          >
+          <span className={`inline-block transition-transform duration-150 ${isPausedUI ? "scale-100" : "scale-95"}`}>
             {isPausedUI ? <PlayIcon weight="fill" /> : <StopIcon weight="fill" />}
           </span>
         </Button>
