@@ -112,35 +112,41 @@
   * {
     @apply border-border;
   }
+
+  html {
+    touch-action: pan-x pan-y;
+  }
+
   body {
     @apply bg-background text-foreground;
+    touch-action: pan-x pan-y;
   }
-  
+
   /* Safari mobile touch fixes */
   a, button, [role="button"] {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
   }
-  
+
   /* Ensure links and buttons are properly clickable on mobile Safari */
   a {
     cursor: pointer;
   }
-  
+
   button {
     cursor: pointer;
   }
-  
+
   [role="button"] {
     cursor: pointer;
   }
-  
+
   /* Text selection styles */
   ::selection {
     background-color: hsl(0 0% 9%);
     color: hsl(0 0% 98%);
   }
-  
+
   .dark ::selection {
     background-color: hsl(0 0% 98%);
     color: hsl(0 0% 9%);
