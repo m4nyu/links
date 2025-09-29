@@ -86,18 +86,18 @@ export default function Page() {
 
   return (
     <TooltipProvider delayDuration={300} skipDelayDuration={100}>
-      <div className="flex w-full max-w-md flex-col items-center space-y-6 text-center">
+      <div className="flex w-full max-w-md flex-col items-center space-y-4 sm:space-y-6 text-center px-4">
         <ContextMenu>
           <ContextMenuTrigger>
-            <Avatar className="size-40 rounded-full">
+            <Avatar className="size-44 sm:size-52 rounded-full cursor-pointer select-none">
               <Image
                 src="/image.jpg"
                 alt={dictionary.portfolio.name}
-                width={160}
-                height={160}
+                width={208}
+                height={208}
                 priority
                 draggable="false"
-                className="object-cover object-center grayscale hover:grayscale-0 transition-all duration-300 rounded-full"
+                className="object-cover object-center rounded-full"
               />
               <AvatarFallback className="rounded-full">MS</AvatarFallback>
             </Avatar>
@@ -123,18 +123,17 @@ export default function Page() {
           </ContextMenuContent>
         </ContextMenu>
 
-        <div className="space-y-1">
-          <h1 className="text-4xl font-bold">{dictionary.portfolio.name}</h1>
-          <p className="text-lg text-muted-foreground">{dictionary.portfolio.tagline}</p>
+        <div className="space-y-1 select-text">
+          <h1 className="text-3xl sm:text-4xl font-bold">{dictionary.portfolio.name}</h1>
+          <p className="text-base sm:text-lg text-muted-foreground">{dictionary.portfolio.tagline}</p>
         </div>
 
-        <div className="flex w-full max-w-[280px] flex-col space-y-2">
+        <div className="flex w-full max-w-[280px] sm:max-w-[360px] flex-col space-y-1.5">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button asChild className="w-full uppercase font-semibold tracking-wider">
+              <Button asChild variant="outline" size="lg" className="w-full h-12 sm:h-14 text-sm sm:text-base uppercase font-semibold tracking-wider justify-start border-black dark:border-white select-none">
                 <Link href="https://m4nuel.blog" target="_blank">
                   {dictionary.portfolio.visitBlog || "My Blog"}
-                  <ArticleIcon className="size-4" />
                 </Link>
               </Button>
             </TooltipTrigger>
@@ -146,16 +145,16 @@ export default function Page() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
-                  variant="secondary"
-                  className="w-full justify-between uppercase font-semibold tracking-wider"
+                  variant="default"
+                  size="lg"
+                  className="w-full h-12 sm:h-14 text-sm sm:text-base uppercase font-semibold tracking-wider justify-start select-none hover:opacity-90"
                   onClick={() => setIsMeetingOpen(true)}
                 >
                   {dictionary.portfolio.scheduleMeeting}
-                  <CalendarCheckIcon className="size-4" />
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                <p>{dictionary.portfolio.scheduleMeetingTooltip}</p>
+                <p>Book a 30-minute call to discuss opportunities</p>
               </TooltipContent>
             </Tooltip>
             <DrawerContent className="h-[100vh] max-h-none flex flex-col">
@@ -169,41 +168,41 @@ export default function Page() {
           </Drawer>
         </div>
 
-        <div className="flex w-full justify-center space-x-2">
+        <div className="flex w-full justify-center space-x-2 sm:space-x-3 select-none">
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" asChild>
+              <Button variant="outline" size="icon" asChild className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white">
                 <Link href="https://github.com/m4nyu" target="_blank" aria-label="GitHub">
-                  <GithubLogoIcon className="size-5" />
+                  <GithubLogoIcon className="size-5 sm:size-6" />
                 </Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{dictionary.portfolio.githubTooltip}</p>
+              <p>GitHub</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" asChild>
+              <Button variant="outline" size="icon" asChild className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white">
                 <Link href="https://www.linkedin.com/in/manuel-szedlak" target="_blank" aria-label="LinkedIn">
-                  <LinkedinLogoIcon className="size-5" />
+                  <LinkedinLogoIcon className="size-5 sm:size-6" />
                 </Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{dictionary.portfolio.linkedinTooltip}</p>
+              <p>LinkedIn</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
             <TooltipTrigger asChild>
-              <Button variant="outline" size="icon" asChild>
+              <Button variant="outline" size="icon" asChild className="h-11 w-11 sm:h-12 sm:w-12 border-black dark:border-white">
                 <Link href="https://x.com/ManuelSzedlak" target="_blank" aria-label="X (formerly Twitter)">
-                  <XLogoIcon className="size-5" />
+                  <XLogoIcon className="size-5 sm:size-6" />
                 </Link>
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{dictionary.portfolio.twitterTooltip}</p>
+              <p>X</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>
@@ -213,7 +212,7 @@ export default function Page() {
                 size="icon"
                 onClick={handleShareClick}
                 aria-label="Share portfolio"
-                className={isShared ? "bg-green-600 hover:bg-green-700" : ""}
+                className={`h-11 w-11 sm:h-12 sm:w-12 ${isShared ? "bg-green-600 hover:bg-green-700" : "hover:opacity-90"}`}
               >
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
@@ -223,13 +222,13 @@ export default function Page() {
                     exit={{ opacity: 0, scale: 0.5 }}
                     transition={{ duration: 0.2 }}
                   >
-                    {isShared ? <CheckIcon className="size-5" /> : <ShareNetworkIcon className="size-5" />}
+                    {isShared ? <CheckIcon className="size-5 sm:size-6" /> : <ShareNetworkIcon className="size-5 sm:size-6" />}
                   </motion.div>
                 </AnimatePresence>
               </Button>
             </TooltipTrigger>
             <TooltipContent side="bottom">
-              <p>{isShared ? dictionary.portfolio.shareCopiedTooltip : dictionary.portfolio.shareTooltip}</p>
+              <p>{isShared ? "Copied!" : "Share"}</p>
             </TooltipContent>
           </Tooltip>
         </div>
