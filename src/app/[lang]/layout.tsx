@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import type React from "react"
 import Mandelbrot from "@/lib/components/mandelbrot"
 import { ThemeProvider } from "@/lib/components/theme-provider"
+import ZoomPrevent from "@/lib/components/zoom-prevent"
+import { i18n } from "@/lib/hooks/use-i18n-config"
 
 const title = "links"
 const description = "Founder and engineer. Portfolio and contact information."
@@ -19,6 +21,12 @@ const localeMap: { [key: string]: string } = {
   ru: "ru_RU",
   hi: "hi_IN",
   ar: "ar_SA",
+}
+
+export function generateStaticParams() {
+  return i18n.locales.map((locale) => ({
+    lang: locale,
+  }))
 }
 
 export async function generateMetadata({ params }: { params: Promise<{ lang: string }> }): Promise<Metadata> {
@@ -41,6 +49,14 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       email: false,
       address: false,
       telephone: false,
+    },
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon.svg", type: "image/svg+xml" },
+        { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      ],
+      apple: [{ url: "/favicon-192x192.png", sizes: "192x192", type: "image/png" }],
     },
     openGraph: {
       type: "website",
@@ -76,13 +92,6 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
         "max-image-preview": "large",
         "max-snippet": -1,
       },
-    },
-    icons: {
-      icon: [
-        { url: "/favicon.svg", type: "image/svg+xml" },
-        { url: "/icon", type: "image/png" },
-      ],
-      apple: "/apple-icon",
     },
     manifest: `${baseUrl}/site.webmanifest`,
     alternates: {
@@ -165,6 +174,7 @@ export default function LangLayout({ children }: { children: React.ReactNode }) 
     <>
       <PersonStructuredData />
       <WebsiteStructuredData />
+      <ZoomPrevent />
       <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
         <div className="relative min-h-screen w-full overflow-hidden bg-background">
           <Mandelbrot />
