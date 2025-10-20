@@ -32,7 +32,7 @@
     "clsx": "^2.1.1",
     "framer-motion": "latest",
     "jszip": "^3.10.1",
-    "lucide-react": "^0.544.0",
+    "lucide-react": "^0.546.0",
     "negotiator": "latest",
     "next": "15.5.4",
     "next-themes": "latest",
