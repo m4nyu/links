@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/lib/components/theme-provider"
 import ZoomPrevent from "@/lib/components/zoom-prevent"
 import { i18n } from "@/lib/hooks/use-i18n-config"
 
-const title = "M4nu"
+const title = "links"
 const description = "Founder and engineer. Portfolio and contact information."
 // Previews link to themselves; production (and local) to the public domain,
 // never to the login-protected *.vercel.app deployment URL.
@@ -43,13 +43,13 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
     metadataBase: new URL(baseUrl),
     title: {
       default: title,
-      template: "%s | M4nu",
+      template: "%s | links",
     },
     description,
     keywords: ["manuel", "portfolio", "founder", "engineer", "contact"],
-    authors: [{ name: "Manuel Szedlak", url: baseUrl }],
-    creator: "M4nu",
-    publisher: "M4nu",
+    authors: [{ name: "links", url: baseUrl }],
+    creator: "links",
+    publisher: "links",
     formatDetection: {
       email: false,
       address: false,
@@ -70,13 +70,13 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
       url,
       title,
       description,
-      siteName: "M4nu",
+      siteName: "links",
       images: [
         {
           url: `${baseUrl}/${lang}/opengraph-image`,
           width: 1200,
           height: 630,
-          alt: "M4nu",
+          alt: "links",
           type: "image/png",
         },
       ],
@@ -150,7 +150,7 @@ function WebsiteStructuredData() {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    name: "M4nu",
+    name: "Manuel - Links",
     alternateName: "Manuel Szedlak Links",
     url: "https://m4nuel.com",
     description: "Founder and engineer. Links and contact information.",
