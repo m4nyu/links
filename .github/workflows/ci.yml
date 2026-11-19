@@ -48,8 +48,8 @@ jobs:
     env:
       TARGET: ${{ github.event_name == 'push' && 'production' || 'preview' }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      VERCEL_SCOPE: prtfolio
+      VERCEL_PROJECT: portfolio
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -63,6 +63,7 @@ jobs:
       - id: deploy
         run: |
           prod=""; [ "$TARGET" = production ] && prod="--prod"
+          npx --yes "$VERCEL_CLI" link --yes --project "$VERCEL_PROJECT" --scope "$VERCEL_SCOPE" --token="$VERCEL_TOKEN"
           npx --yes "$VERCEL_CLI" pull --yes --environment="$TARGET" --token="$VERCEL_TOKEN"
           npx --yes "$VERCEL_CLI" build $prod --token="$VERCEL_TOKEN"
           url=$(npx --yes "$VERCEL_CLI" deploy --prebuilt $prod --token="$VERCEL_TOKEN")
