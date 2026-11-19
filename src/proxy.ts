@@ -16,7 +16,7 @@ function getLocale(request: NextRequest): string | undefined {
   return matchLocale(languages, locales, defaultLocale)
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const pathname = request.nextUrl.pathname
   const pathnameIsMissingLocale = i18n.locales.every(
     (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
@@ -24,10 +24,12 @@ export function middleware(request: NextRequest) {
 
   if (pathnameIsMissingLocale) {
     const locale = getLocale(request)
-    return NextResponse.redirect(new URL(`/${locale}${pathname.startsWith("/") ? "" : "/"}${pathname}`, request.url))
+    return NextResponse.redirect(new URL(`/${locale}${pathname === "/" ? "" : pathname}`, request.url))
   }
 }
 
+// Page paths only: anything with a file extension (the images zip, robots.txt,
+// sitemap.xml, icons) is served as is, never redirected to /<locale>/...
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|assets).*)"],
+  matcher: ["/((?!api|_next|.*\\..*).*)"],
 }

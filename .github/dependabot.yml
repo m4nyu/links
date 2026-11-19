@@ -1,31 +1,30 @@
 version: 2
+# Every dependency, daily. Minor and patch updates come as one PR per
+# ecosystem, majors one PR each, so a breaking major cannot hold back the
+# rest. CI's automerge job merges a PR once its checks pass; main then deploys.
+# Cooldown: a release is proposed only after it has been public for 3 days,
+# the window in which compromised versions are usually caught and
+# pulled. Security updates skip the wait.
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: bun
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-    open-pull-requests-limit: 10
-    reviewers:
-      - "manuel-lambda"
-    assignees:
-      - "manuel-lambda"
+      interval: daily
+    cooldown:
+      default-days: 3
+    groups:
+      bun:
+        update-types: [minor, patch]
     commit-message:
       prefix: "deps"
-      include: "scope"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "10:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "manuel-lambda"
-    assignees:
-      - "manuel-lambda"
+      interval: daily
+    cooldown:
+      default-days: 3
+    groups:
+      github-actions:
+        update-types: [minor, patch]
     commit-message:
-      prefix: "ci"
-      include: "scope"
+      prefix: "deps"

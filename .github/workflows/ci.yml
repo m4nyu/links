@@ -1,7 +1,8 @@
 name: CI
 
 # Pull requests into main (drafts included) deploy a Vercel preview and comment
-# its URL; pushes to main deploy production (m4nuel.com). Vercel's own Git
+# its URL; pushes to main (and dispatches on main, see automerge) deploy
+# production (m4nuel.com). Vercel's own Git
 # deployments are off (vercel.json), so GitHub runners are the only deployer.
 on:
   pull_request:
@@ -9,6 +10,7 @@ on:
     types: [opened, synchronize, reopened, ready_for_review]
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -31,22 +33,23 @@ jobs:
       - run: bun install --frozen-lockfile
       - run: bun run lint
       - run: bun run type-check
+      - run: bun run build
       - run: bun audit
 
   deploy:
     needs: check
-    # Fork PRs get no secrets.
-    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    # Fork and Dependabot PRs get no secrets.
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository && github.event.pull_request.user.login != 'dependabot[bot]'
     runs-on: ubuntu-24.04
-    environment: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+    environment: ${{ github.event_name != 'pull_request' && 'production' || 'preview' }}
     concurrency:
-      group: deploy-${{ github.event_name == 'push' && 'production' || github.ref }}
+      group: deploy-${{ github.event_name != 'pull_request' && 'production' || github.ref }}
       cancel-in-progress: false
     permissions:
       contents: read
       pull-requests: write
     env:
-      TARGET: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+      TARGET: ${{ github.event_name != 'pull_request' && 'production' || 'preview' }}
       VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
       VERCEL_SCOPE: prtfolio
       VERCEL_PROJECT: portfolio
@@ -56,7 +59,7 @@ jobs:
           persist-credentials: false
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 24
+          node-version: 26
       - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
         with:
           bun-version: ${{ env.BUN_VERSION }}
@@ -83,3 +86,21 @@ jobs:
               issue_number: context.issue.number,
               body: `Preview deployed: ${process.env.URL}`,
             });
+
+  # Dependabot PRs: merge once the checks pass, then run this workflow on main
+  # to deploy. A merge made with GITHUB_TOKEN starts no push workflow;
+  # workflow_dispatch is the one event it may start.
+  automerge:
+    needs: check
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      PR: ${{ github.event.pull_request.html_url }}
+    steps:
+      - run: gh pr merge "$PR" --squash --delete-branch -R "$GITHUB_REPOSITORY"
+      - run: gh workflow run ci.yml --ref main -R "$GITHUB_REPOSITORY"

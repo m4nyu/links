@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next"
+import { i18n } from "@/lib/hooks/use-i18n-config"
 
 export default function sitemap(): MetadataRoute.Sitemap {
   // Previews link to themselves; production (and local) to the public domain,
@@ -7,37 +8,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
       : "https://m4nuel.com"
+  const languages = Object.fromEntries(i18n.locales.map((l) => [l, `${baseUrl}/${l}`]))
 
-  const languages = ["en", "de", "es", "fr", "zh-CN", "ja", "pt-BR", "ru", "hi", "ar"]
-
-  const routes: MetadataRoute.Sitemap = []
-
-  // Root redirect
-  routes.push({
-    url: baseUrl,
-    lastModified: new Date(),
+  return i18n.locales.map((lang) => ({
+    url: `${baseUrl}/${lang}`,
     changeFrequency: "monthly",
-    priority: 0.8,
-  })
-
-  // Language-specific routes
-  languages.forEach((lang) => {
-    // Main page
-    routes.push({
-      url: `${baseUrl}/${lang}`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 1,
-    })
-
-    // Imprint page - temporarily removed
-    // routes.push({
-    //   url: `${baseUrl}/${lang}/imprint`,
-    //   lastModified: new Date(),
-    //   changeFrequency: "yearly",
-    //   priority: 0.3,
-    // })
-  })
-
-  return routes
+    priority: lang === i18n.defaultLocale ? 1 : 0.8,
+    alternates: { languages },
+  }))
 }

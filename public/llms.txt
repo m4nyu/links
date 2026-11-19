@@ -1,0 +1,17 @@
+# links (Manuel Szedlak)
+
+> Manuel Szedlak is a founder and engineer: distributed systems, AI/ML training and inference, service architecture. This site collects his links and lets you book a meeting.
+
+The page exists in 10 languages: https://m4nuel.com/en (also de, es, fr, zh-CN, ja, pt-BR, ru, hi, ar).
+
+## Links
+
+- [m4nuel.blog](https://m4nuel.blog): notes on software, written and served in Rust; full text at https://m4nuel.blog/llms-full.txt
+- [m4nuel.net](https://m4nuel.net): profile and opinions in 12 languages
+- [GitHub](https://github.com/m4nyu)
+- [LinkedIn](https://www.linkedin.com/in/manuel-szedlak)
+- [X](https://x.com/ManuelSzedlak)
+
+## Contact
+
+A 30-minute meeting can be booked from the "Schedule a meeting" button on https://m4nuel.com/en.
