@@ -1,7 +1,12 @@
 import type { MetadataRoute } from "next"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "https://m4nuel.com"
+  // Previews link to themselves; production (and local) to the public domain,
+  // never to the login-protected *.vercel.app deployment URL.
+  const baseUrl =
+    process.env.VERCEL_ENV === "preview" && process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "https://m4nuel.com"
 
   const languages = ["en", "de", "es", "fr", "zh-CN", "ja", "pt-BR", "ru", "hi", "ar"]
 
@@ -23,14 +28,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       lastModified: new Date(),
       changeFrequency: "monthly",
       priority: 1,
-    })
-
-    // Startups page
-    routes.push({
-      url: `${baseUrl}/${lang}/startups`,
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.8,
     })
 
     // Imprint page - temporarily removed
