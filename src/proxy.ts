@@ -28,7 +28,7 @@ export function proxy(request: NextRequest) {
   }
 }
 
-// Page paths only: anything with a file extension (image.jpg, robots.txt,
+// Page paths only: anything with a file extension (the images zip, robots.txt,
 // sitemap.xml, icons) is served as is, never redirected to /<locale>/...
 export const config = {
   matcher: ["/((?!api|_next|.*\\..*).*)"],

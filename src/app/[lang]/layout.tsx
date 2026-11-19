@@ -10,6 +10,8 @@ import ZoomPrevent from "@/lib/components/zoom-prevent"
 import { i18n } from "@/lib/hooks/use-i18n-config"
 
 const title = "links"
+// Tab title on every page of every site: the M favicon, then "4nuel".
+const tabTitle = "4nuel"
 const author = "Manuel Szedlak"
 const description = "Manuel Szedlak, founder and engineer: blog, opinions, GitHub, LinkedIn, X and a meeting link."
 // Previews link to themselves; production (and local) to the public domain,
@@ -56,10 +58,7 @@ export async function generateMetadata({ params }: { params: Promise<{ lang: str
 
   return {
     metadataBase: new URL(baseUrl),
-    title: {
-      default: title,
-      template: "%s | links",
-    },
+    title: { absolute: tabTitle },
     description,
     keywords: ["Manuel Szedlak", "m4nuel", "founder", "engineer", "links", "contact"],
     authors: [{ name: author, url: site }],

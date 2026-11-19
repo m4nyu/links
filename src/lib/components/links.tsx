@@ -27,7 +27,7 @@ import {
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/lib/components/ui/drawer"
 import { ScrollArea } from "@/lib/components/ui/scroll-area"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/lib/components/ui/tooltip"
-import { downloadImages, shareContent } from "@/lib/utils"
+import { shareContent } from "@/lib/utils"
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
 
@@ -45,14 +45,6 @@ export default function Links({ lang, dictionary }: { lang: string; dictionary: 
   const [isMeetingOpen, setIsMeetingOpen] = useState(false)
   const [isShared, setIsShared] = useState(false)
   const { setTheme } = useTheme()
-
-  const handleDownloadImages = async () => {
-    try {
-      await downloadImages("/image.jpg")
-    } catch (error) {
-      console.error("Download failed:", error)
-    }
-  }
 
   const handleShareClick = async () => {
     const shareData = {
@@ -79,9 +71,12 @@ export default function Links({ lang, dictionary }: { lang: string; dictionary: 
             </div>
           </ContextMenuTrigger>
           <ContextMenuContent>
-            <ContextMenuItem onClick={handleDownloadImages}>
-              <DownloadSimpleIcon className="mr-2 size-4" />
-              Download Images
+            {/* A ready-made zip (color and gray, JPG and WebP): the download starts at once. */}
+            <ContextMenuItem asChild>
+              <a href="/manuel-szedlak-images.zip" download>
+                <DownloadSimpleIcon className="mr-2 size-4" />
+                Download Images
+              </a>
             </ContextMenuItem>
             <ContextMenuSeparator />
             <ContextMenuItem onClick={() => setTheme("light")}>
