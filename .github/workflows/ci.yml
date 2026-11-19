@@ -1,21 +1,85 @@
 name: CI
 
+# Pull requests into main (drafts included) deploy a Vercel preview and comment
+# its URL; pushes to main deploy production (m4nuel.com). Vercel's own Git
+# deployments are off (vercel.json), so GitHub runners are the only deployer.
 on:
-  push:
-    branches: [main]
   pull_request:
     branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+env:
+  BUN_VERSION: 1.4.5
+  VERCEL_CLI: vercel@66.2.0
+  NEXT_TELEMETRY_DISABLED: 1
 
 jobs:
-  lint-and-typecheck:
-    name: Lint and Type Check
-    runs-on: ubuntu-latest
+  check:
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v5
-      - uses: oven-sh/setup-bun@v2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
-          bun-version: latest
-      - run: bun install
+          persist-credentials: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - run: bun install --frozen-lockfile
       - run: bun run lint
       - run: bun run type-check
+      - run: bun audit
 
+  deploy:
+    needs: check
+    # Fork PRs get no secrets.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    environment: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+    concurrency:
+      group: deploy-${{ github.event_name == 'push' && 'production' || github.ref }}
+      cancel-in-progress: false
+    permissions:
+      contents: read
+      pull-requests: write
+    env:
+      TARGET: ${{ github.event_name == 'push' && 'production' || 'preview' }}
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_SCOPE: prtfolio
+      VERCEL_PROJECT: portfolio
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: ${{ env.BUN_VERSION }}
+      - id: deploy
+        run: |
+          prod=""; [ "$TARGET" = production ] && prod="--prod"
+          # Team-scoped token: `vercel link` needs the user endpoint, which it may
+          # not read. The project endpoint names the IDs the CLI needs instead.
+          ids=$(curl -fsS -H "Authorization: Bearer $VERCEL_TOKEN" \
+            "https://api.vercel.com/v9/projects/$VERCEL_PROJECT?slug=$VERCEL_SCOPE")
+          export VERCEL_ORG_ID=$(jq -r .accountId <<<"$ids") VERCEL_PROJECT_ID=$(jq -r .id <<<"$ids")
+          npx --yes "$VERCEL_CLI" pull --yes --environment="$TARGET" --token="$VERCEL_TOKEN"
+          npx --yes "$VERCEL_CLI" build $prod --token="$VERCEL_TOKEN"
+          url=$(npx --yes "$VERCEL_CLI" deploy --prebuilt $prod --token="$VERCEL_TOKEN")
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+      - if: github.event_name == 'pull_request'
+        uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+        env:
+          URL: ${{ steps.deploy.outputs.url }}
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              ...context.repo,
+              issue_number: context.issue.number,
+              body: `Preview deployed: ${process.env.URL}`,
+            });

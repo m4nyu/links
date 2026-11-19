@@ -35,6 +35,14 @@ import { downloadImages, getDictionary, shareContent } from "@/lib/utils"
 
 const Meeting = dynamic(() => import("@/lib/components/meeting"))
 
+// Languages m4nuel.net serves; anything else falls back to English.
+const netLanguages = new Set(["en", "de", "fr", "es", "it", "pt", "nl", "ru", "ja", "ko", "zh", "ar"])
+
+function opinionsUrl(lang: string): string {
+  const base = lang.split("-")[0].toLowerCase()
+  return `https://m4nuel.net/${netLanguages.has(base) ? base : "en"}#qa`
+}
+
 export default function Page() {
   const params = useParams()
   const lang = params?.lang as Locale
@@ -142,6 +150,23 @@ export default function Page() {
             </TooltipTrigger>
             <TooltipContent side="bottom">
               <p>Visit my blog for articles and insights</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                asChild
+                variant="outline"
+                size="lg"
+                className="w-full h-12 sm:h-14 text-sm sm:text-base uppercase font-semibold tracking-wider justify-start border-black dark:border-white select-none"
+              >
+                <Link href={opinionsUrl(lang)} target="_blank">
+                  {dictionary.portfolio.opinions}
+                </Link>
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="bottom">
+              <p>Opinions on m4nuel.net</p>
             </TooltipContent>
           </Tooltip>
           <Drawer open={isMeetingOpen} onOpenChange={setIsMeetingOpen}>
