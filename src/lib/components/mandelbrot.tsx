@@ -22,7 +22,8 @@ export default function Mandelbrot() {
   const [currentFractal, setCurrentFractal] = useState({ name: "", formula: "" })
   const [isPausedUI, setIsPausedUI] = useState(false)
   const [isDragging, setIsDragging] = useState(false)
-  const [fps, setFps] = useState(60)
+  // Written directly, so the 4 Hz FPS readout does not re-render React.
+  const fpsRef = useRef<HTMLSpanElement>(null)
   const dragStartRef = useRef({ x: 0, y: 0 })
 
   useEffect(() => {
@@ -57,6 +58,9 @@ export default function Mandelbrot() {
       renderScale: number
       center: { x: number; y: number }
       baseZoom: number
+      // While paused, a frame is drawn only when the view or theme changed.
+      dirty = true
+      lastDark = -1
 
       constructor(canvas: HTMLCanvasElement, onModeChange: (name: string, formula: string) => void) {
         this.canvas = canvas
@@ -70,7 +74,7 @@ export default function Mandelbrot() {
         this.fps = 60
         this.fpsSampleFrames = 0
         this.fpsSampleStart = performance.now()
-        this.targetFps = 120
+        this.targetFps = 60
 
         this.time = 0
         this.isPaused = false
@@ -100,8 +104,6 @@ export default function Mandelbrot() {
           { name: "Tinkerbell", formula: "[x²-y²+ax+by, 2xy+cx+dy] + c" },
           { name: "Chirikov", formula: "[x+y+k·sin(x), y+k·sin(x)] + c" },
         ]
-
-        this.init()
       }
 
       getVertexShader() {
@@ -400,10 +402,8 @@ export default function Mandelbrot() {
           powerPreference: "high-performance",
         })
 
-        if (!this.gl) {
-          console.error("WebGL not supported!")
-          return
-        }
+        // No WebGL: the page keeps its plain background.
+        if (!this.gl) return
 
         this.resize()
         if (this.createShaders(this.currentMode)) {
@@ -506,6 +506,7 @@ export default function Mandelbrot() {
       setMode(modeIndex: number) {
         this.currentMode = modeIndex
         this.createShaders(modeIndex)
+        this.dirty = true
       }
 
       setupGeometry() {
@@ -561,6 +562,7 @@ export default function Mandelbrot() {
         if (minDimension < 600) {
           this.zoom *= 0.8
         }
+        this.dirty = true
       }
 
       private adjustIterationsDown() {
@@ -656,36 +658,44 @@ export default function Mandelbrot() {
         this.gl.drawArrays(this.gl.TRIANGLE_STRIP, 0, 4)
       }
 
-      animate() {
-        const currentTime = performance.now()
-        const deltaTime = currentTime - this.lastTime
-
+      private sampleFps(now: number) {
         this.fpsSampleFrames += 1
-        const elapsed = currentTime - this.fpsSampleStart
-        if (elapsed >= 250) {
-          this.fps = (this.fpsSampleFrames * 1000) / elapsed
-          this.updateQuality(this.fps)
-          this.fpsSampleFrames = 0
-          this.fpsSampleStart = currentTime
-        }
+        const elapsed = now - this.fpsSampleStart
+        if (elapsed < 250) return
+        this.fps = (this.fpsSampleFrames * 1000) / elapsed
+        this.updateQuality(this.fps)
+        this.fpsSampleFrames = 0
+        this.fpsSampleStart = now
+      }
 
-        this.lastTime = currentTime
+      // Moves the animation on and switches to the next fractal every 12 s.
+      private advance(deltaTime: number) {
+        this.time += deltaTime * 0.001
+        this.modeChangeTime += deltaTime
+        if (this.modeChangeTime <= 12000) return
+        this.currentMode = (this.currentMode + 1) % this.modes.length
+        this.setMode(this.currentMode)
+        this.modeChangeTime = 0
+        this.onModeChange(this.modes[this.currentMode].name, this.modes[this.currentMode].formula)
+      }
 
-        if (!this.isPaused) {
-          this.time += deltaTime * 0.001
-          this.modeChangeTime += deltaTime
-        }
-
-        if (this.modeChangeTime > 12000) {
-          this.currentMode = (this.currentMode + 1) % this.modes.length
-          this.setMode(this.currentMode)
-          this.modeChangeTime = 0
-          this.onModeChange(this.modes[this.currentMode].name, this.modes[this.currentMode].formula)
-        }
-
-        this.render()
-
+      animate() {
         this.animationId = requestAnimationFrame(() => this.animate())
+        const currentTime = performance.now()
+        // 60 fps cap: a 120 Hz display would otherwise double the GPU work.
+        if (currentTime - this.lastTime < 1000 / 60 - 2) return
+        // rAF stops in background tabs; clamp so the fractal does not jump on return.
+        const deltaTime = Math.min(currentTime - this.lastTime, 100)
+        this.lastTime = currentTime
+        this.sampleFps(currentTime)
+        if (!this.isPaused) this.advance(deltaTime)
+
+        const dark = document.documentElement.classList.contains("dark") ? 1 : 0
+        if (!this.isPaused || this.dirty || dark !== this.lastDark) {
+          this.render()
+          this.dirty = false
+          this.lastDark = dark
+        }
       }
 
       destroy() {
@@ -708,18 +718,21 @@ export default function Mandelbrot() {
         this.zoom *= factor
         this.center.x = worldX - uv.x * this.zoom
         this.center.y = worldY - uv.y * this.zoom
+        this.dirty = true
       }
 
       panBy(deltaScreenX: number, deltaScreenY: number) {
         const minDim = Math.min(this.canvas.width, this.canvas.height)
         this.center.x -= (deltaScreenX / minDim) * this.zoom
         this.center.y += (deltaScreenY / minDim) * this.zoom
+        this.dirty = true
       }
 
       resetView() {
         this.center.x = -0.5
         this.center.y = 0.0
         this.zoom = this.baseZoom
+        this.dirty = true
       }
 
       togglePause() {
@@ -731,6 +744,8 @@ export default function Mandelbrot() {
       setCurrentFractal({ name, formula })
     })
     rendererRef.current = renderer
+    // Reduced motion: one still frame; zoom, pan and play still work.
+    renderer.isPaused = window.matchMedia("(prefers-reduced-motion: reduce)").matches
 
     setCurrentFractal({
       name: renderer.modes[0].name,
@@ -738,14 +753,16 @@ export default function Mandelbrot() {
     })
     setIsPausedUI(renderer.isPaused)
 
-    // Performance monitoring
-    const updateStats = () => {
-      if (renderer) {
-        setFps(Math.round(renderer.fps))
-      }
-    }
+    // Start after the page is interactive, so shader compilation and the first
+    // frames never compete with hydration or the first paint.
+    const hasIdle = typeof window.requestIdleCallback === "function"
+    const idleId = hasIdle
+      ? window.requestIdleCallback(() => renderer.init(), { timeout: 2000 })
+      : window.setTimeout(() => renderer.init(), 200)
 
-    const statsInterval = setInterval(updateStats, 250)
+    const statsInterval = setInterval(() => {
+      if (fpsRef.current) fpsRef.current.textContent = String(Math.round(renderer.fps))
+    }, 250)
 
     const handleResize = () => {
       if (renderer) {
@@ -753,18 +770,12 @@ export default function Mandelbrot() {
       }
     }
 
-    const handleVisibility = () => {
-      if (!rendererRef.current) return
-      rendererRef.current.isPaused = document.hidden
-      setIsPausedUI(document.hidden)
-    }
-
     window.addEventListener("resize", handleResize)
-    document.addEventListener("visibilitychange", handleVisibility)
 
     return () => {
       window.removeEventListener("resize", handleResize)
-      document.removeEventListener("visibilitychange", handleVisibility)
+      if (hasIdle) window.cancelIdleCallback(idleId)
+      else window.clearTimeout(idleId)
       clearInterval(statsInterval)
       if (rendererRef.current) {
         rendererRef.current.destroy()
@@ -774,7 +785,6 @@ export default function Mandelbrot() {
 
   const handleCanvasWheel = (e: React.WheelEvent<HTMLCanvasElement>) => {
     if (!rendererRef.current || !canvasRef.current) return
-    e.preventDefault()
     const factor = e.deltaY < 0 ? 0.9 : 1.1
     const canvas = canvasRef.current
     rendererRef.current.zoomAt(
@@ -843,7 +853,7 @@ export default function Mandelbrot() {
                        dark:contrast-more:text-foreground/80
                        motion-reduce:transition-none"
           >
-            WEBGL | {fps} FPS
+            WEBGL | <span ref={fpsRef}>60</span> FPS
           </div>
         </div>
       )}
