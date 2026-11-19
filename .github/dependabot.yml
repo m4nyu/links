@@ -1,31 +1,22 @@
 version: 2
+# Every dependency, daily, one grouped PR per ecosystem. CI's automerge job
+# merges it once the checks pass; main then deploys.
 updates:
-  - package-ecosystem: "npm"
-    directory: "/"
+  - package-ecosystem: bun
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "09:00"
-    open-pull-requests-limit: 10
-    reviewers:
-      - "manuel-lambda"
-    assignees:
-      - "manuel-lambda"
+      interval: daily
+    groups:
+      bun:
+        patterns: ["*"]
     commit-message:
       prefix: "deps"
-      include: "scope"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "weekly"
-      day: "monday"
-      time: "10:00"
-    open-pull-requests-limit: 5
-    reviewers:
-      - "manuel-lambda"
-    assignees:
-      - "manuel-lambda"
+      interval: daily
+    groups:
+      github-actions:
+        patterns: ["*"]
     commit-message:
-      prefix: "ci"
-      include: "scope"
+      prefix: "deps"
