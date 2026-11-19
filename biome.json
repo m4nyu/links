@@ -1,10 +1,10 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.1.2/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.6.8/schema.json",
   "assist": { "actions": { "source": { "organizeImports": "on" } } },
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true,
+      "preset": "recommended",
       "complexity": {
         "noExcessiveCognitiveComplexity": "error",
         "noUselessFragments": "error"
@@ -61,13 +61,13 @@
       "**/*.tsx",
       "**/*.json",
       "**/*.jsonc",
-      "!**/node_modules/**",
-      "!**/.next/**",
-      "!**/dist/**",
-      "!**/build/**",
-      "!**/.git/**",
-      "!**/coverage/**",
-      "!**/.claude/**"
+      "!**/node_modules",
+      "!**/.next",
+      "!**/dist",
+      "!**/build",
+      "!**/.git",
+      "!**/coverage",
+      "!**/.claude"
     ]
   },
   "overrides": [
@@ -76,7 +76,7 @@
       "linter": {
         "rules": {
           "a11y": {
-            "recommended": true
+            "preset": "recommended"
           }
         }
       }
